@@ -103,18 +103,18 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
   }
 
   return (
-    <div className={`bg-[#f8f9fa] shadow-sm ${className}`}>
+    <div className={`bg-muted/30 dark:bg-muted/10 border-b border-border shadow-sm ${className}`}>
       <div className="px-4 sm:px-6 py-4 sm:py-5">
         <div className="flex items-end justify-start gap-4 sm:gap-6 flex-wrap sm:justify-between">
           {/* Date Range Filter */}
           <div className="flex flex-col gap-2">
-            <Label className="text-sm font-semibold text-gray-700">Date Range</Label>
+            <Label className="text-sm font-semibold">Date Range</Label>
             <div className="flex items-center gap-2">
               <Select
                 value={dateRangePreset}
                 onValueChange={(value: any) => setDateRangePreset(value)}
               >
-                <SelectTrigger className={`min-w-[140px] h-9 ${dateRangePreset !== 'last-30-days' ? 'border-blue-300 bg-blue-50' : ''}`}>
+                <SelectTrigger className={`min-w-[140px] h-9 ${dateRangePreset !== 'last-30-days' ? 'border-primary/50 bg-primary/10 dark:border-primary/30 dark:bg-primary/5' : ''}`}>
                   <SelectValue placeholder="Select period" />
                 </SelectTrigger>
                 <SelectContent>
@@ -169,13 +169,13 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
           {/* City Filter */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <Label className="text-sm font-semibold text-gray-700">City</Label>
+              <Label className="text-sm font-semibold">City</Label>
               {selectedCities.length > 0 && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedCities([])}
-                  className="h-4 w-4 p-0 text-gray-400 hover:text-gray-600"
+                  className="h-4 w-4 p-0 text-muted-foreground/60 hover:text-muted-foreground"
                 >
                   <X className="h-3 w-3" />
                 </Button>
@@ -193,7 +193,7 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
                 }
               }}
             >
-              <SelectTrigger className={`min-w-[130px] h-9 ${selectedCities.length > 0 ? 'border-blue-300 bg-blue-50' : ''}`}>
+              <SelectTrigger className={`min-w-[130px] h-9 ${selectedCities.length > 0 ? 'border-primary/50 bg-primary/10 dark:border-primary/30 dark:bg-primary/5' : ''}`}>
                 <SelectValue placeholder="Select city">
                   {selectedCities.length === 0 ? 'All Cities' : 
                    selectedCities.length === 1 ? cities.find(c => c.id === selectedCities[0])?.name :
@@ -214,13 +214,13 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
           {/* Dark Store Filter */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <Label className="text-sm font-semibold text-gray-700">Dark Store</Label>
+              <Label className="text-sm font-semibold">Dark Store</Label>
               {selectedDarkStores.length > 0 && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedDarkStores([])}
-                  className="h-4 w-4 p-0 text-gray-400 hover:text-gray-600"
+                  className="h-4 w-4 p-0 text-muted-foreground/60 hover:text-muted-foreground"
                 >
                   <X className="h-3 w-3" />
                 </Button>
@@ -238,7 +238,7 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
                 }
               }}
             >
-              <SelectTrigger className={`min-w-[160px] h-9 ${selectedDarkStores.length > 0 ? 'border-blue-300 bg-blue-50' : ''}`}>
+              <SelectTrigger className={`min-w-[160px] h-9 ${selectedDarkStores.length > 0 ? 'border-primary/50 bg-primary/10 dark:border-primary/30 dark:bg-primary/5' : ''}`}>
                 <SelectValue placeholder="Select store">
                   {selectedDarkStores.length === 0 ? 'All Stores' : 
                    selectedDarkStores.length === 1 ? getFilteredDarkStores().find(s => s.id === selectedDarkStores[0])?.name :
@@ -259,13 +259,13 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
           {/* Brand Filter */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <Label className="text-sm font-semibold text-gray-700">Brand</Label>
+              <Label className="text-sm font-semibold">Brand</Label>
               {selectedBrands.length > 0 && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedBrands([])}
-                  className="h-4 w-4 p-0 text-gray-400 hover:text-gray-600"
+                  className="h-4 w-4 p-0 text-muted-foreground/60 hover:text-muted-foreground"
                 >
                   <X className="h-3 w-3" />
                 </Button>
@@ -283,7 +283,7 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
                 }
               }}
             >
-              <SelectTrigger className={`min-w-[130px] h-9 ${selectedBrands.length > 0 ? 'border-blue-300 bg-blue-50' : ''}`}>
+              <SelectTrigger className={`min-w-[130px] h-9 ${selectedBrands.length > 0 ? 'border-primary/50 bg-primary/10 dark:border-primary/30 dark:bg-primary/5' : ''}`}>
                 <SelectValue placeholder="Select brand">
                   {selectedBrands.length === 0 ? 'All Brands' : 
                    selectedBrands.length === 1 ? brands.find(b => b.id === selectedBrands[0])?.name :
@@ -304,13 +304,13 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
           {/* SKU Filter */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <Label className="text-sm font-semibold text-gray-700">SKU</Label>
+              <Label className="text-sm font-semibold">SKU</Label>
               {selectedSkus.length > 0 && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedSkus([])}
-                  className="h-4 w-4 p-0 text-gray-400 hover:text-gray-600"
+                  className="h-4 w-4 p-0 text-muted-foreground/60 hover:text-muted-foreground"
                 >
                   <X className="h-3 w-3" />
                 </Button>
@@ -328,7 +328,7 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
                 }
               }}
             >
-              <SelectTrigger className={`min-w-[160px] h-9 ${selectedSkus.length > 0 ? 'border-blue-300 bg-blue-50' : ''}`}>
+              <SelectTrigger className={`min-w-[160px] h-9 ${selectedSkus.length > 0 ? 'border-primary/50 bg-primary/10 dark:border-primary/30 dark:bg-primary/5' : ''}`}>
                 <SelectValue placeholder="Select SKU">
                   {selectedSkus.length === 0 ? 'All SKUs' : 
                    selectedSkus.length === 1 ? getFilteredSkus().find(s => s.id === selectedSkus[0])?.name :
@@ -350,13 +350,13 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
           {activeTab === 'visibility' && (
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
-                <Label className="text-sm font-semibold text-gray-700">Keywords</Label>
+                <Label className="text-sm font-semibold">Keywords</Label>
                 {selectedKeywords.length > 0 && (
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => setSelectedKeywords([])}
-                    className="h-4 w-4 p-0 text-gray-400 hover:text-gray-600"
+                    className="h-4 w-4 p-0 text-muted-foreground/60 hover:text-muted-foreground"
                   >
                     <X className="h-3 w-3" />
                   </Button>
@@ -374,7 +374,7 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
                   }
                 }}
               >
-                <SelectTrigger className={`min-w-[150px] h-9 ${selectedKeywords.length > 0 ? 'border-blue-300 bg-blue-50' : ''}`}>
+                <SelectTrigger className={`min-w-[150px] h-9 ${selectedKeywords.length > 0 ? 'border-primary/50 bg-primary/10 dark:border-primary/30 dark:bg-primary/5' : ''}`}>
                   <SelectValue placeholder="Select keywords">
                     {selectedKeywords.length === 0 ? 'All Keywords' : 
                      selectedKeywords.length === 1 ? selectedKeywords[0] :
@@ -395,7 +395,7 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
 
           {/* Active Filter Count and Clear All */}
           <div className="flex flex-col gap-2">
-            <div className="text-sm font-semibold text-gray-700 opacity-0 pointer-events-none">Actions</div>
+            <div className="text-sm font-semibold opacity-0 pointer-events-none">Actions</div>
             <div className="flex items-center gap-3">
               {hasActiveFilters() && (
                 <>
@@ -406,7 +406,7 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
                     variant="outline"
                     size="sm"
                     onClick={resetCurrentPlatformFilters}
-                    className="h-9 px-3 text-xs border-red-300 text-red-700 hover:bg-red-50"
+                    className="h-9 px-3 text-xs border-destructive/50 text-destructive hover:bg-destructive/10 dark:border-destructive/30 dark:hover:bg-destructive/5"
                   >
                     Clear All
                   </Button>
