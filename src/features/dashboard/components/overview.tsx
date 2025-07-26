@@ -84,17 +84,19 @@ export function Overview() {
       <BarChart data={filteredData}>
         <XAxis
           dataKey='name'
-          stroke='#888888'
+          stroke='currentColor'
           fontSize={12}
           tickLine={false}
           axisLine={false}
+          opacity={0.5}
         />
         <YAxis
-          stroke='#888888'
+          stroke='currentColor'
           fontSize={12}
           tickLine={false}
           axisLine={false}
           tickFormatter={getTickFormatter()}
+          opacity={0.5}
         />
         <Bar
           dataKey='total'

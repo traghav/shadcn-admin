@@ -66,21 +66,21 @@ const AvailabilityAnalyticsComponent = memo(() => {
       category: "Atta",
       stores: 3,
       severity: "Critical",
-      color: "text-red-600"
+      color: "text-destructive"
     },
     {
       product: "Aashirvaad Instant Poha",
       category: "Ready-to-Eat",
       stores: 8,
       severity: "Low",
-      color: "text-orange-600"
+      color: "text-chart-3"
     },
     {
       product: "Aashirvaad Turmeric Powder",
       category: "Spices",
       stores: 15,
       severity: "Watch",
-      color: "text-yellow-600"
+      color: "text-chart-2"
     }
   ]
 

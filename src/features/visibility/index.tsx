@@ -78,7 +78,7 @@ export default function VisibilityAnalytics() {
                     <p className="text-sm text-muted-foreground">Keyword: "atta"</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium text-green-600">#1</p>
+                    <p className="font-medium text-chart-1">#1</p>
                     <p className="text-sm text-muted-foreground">35.6% SOV</p>
                   </div>
                 </div>
@@ -88,7 +88,7 @@ export default function VisibilityAnalytics() {
                     <p className="text-sm text-muted-foreground">Keyword: "multigrain atta"</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium text-blue-600">#3</p>
+                    <p className="font-medium text-chart-2">#3</p>
                     <p className="text-sm text-muted-foreground">19.8% SOV</p>
                   </div>
                 </div>
@@ -98,7 +98,7 @@ export default function VisibilityAnalytics() {
                     <p className="text-sm text-muted-foreground">Keyword: "instant poha"</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium text-orange-600">#4</p>
+                    <p className="font-medium text-chart-3">#4</p>
                     <p className="text-sm text-muted-foreground">15.2% SOV</p>
                   </div>
                 </div>

@@ -236,10 +236,10 @@ export function RecentSales() {
   
   const getChangeColor = (changeType: string) => {
     switch (changeType) {
-      case 'positive': return 'text-green-600'
-      case 'negative': return 'text-red-600'
-      case 'warning': return 'text-orange-600'
-      default: return 'text-gray-600'
+      case 'positive': return 'text-chart-1'
+      case 'negative': return 'text-destructive'
+      case 'warning': return 'text-chart-3'
+      default: return 'text-muted-foreground'
     }
   }
   

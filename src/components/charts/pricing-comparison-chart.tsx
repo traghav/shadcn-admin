@@ -70,10 +70,10 @@ export function PricingComparisonChart({
 
   // Color function based on competitiveness
   const getBarColor = (priceIndex: number) => {
-    if (priceIndex < 95) return '#10B981' // Green - very competitive
-    if (priceIndex < 100) return '#F59E0B' // Orange - slightly higher
-    if (priceIndex < 105) return '#EF4444' // Red - premium pricing
-    return '#DC2626' // Dark red - very expensive
+    if (priceIndex < 95) return 'hsl(var(--chart-1))' // Green - very competitive
+    if (priceIndex < 100) return 'hsl(var(--chart-2))' // Orange - slightly higher
+    if (priceIndex < 105) return 'hsl(var(--chart-3))' // Red - premium pricing
+    return 'hsl(var(--chart-4))' // Dark red - very expensive
   }
 
   // Custom tooltip for bar chart
@@ -81,18 +81,18 @@ export function PricingComparisonChart({
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
-        <div className="bg-white p-3 border rounded-lg shadow-lg max-w-xs">
+        <div className="bg-popover text-popover-foreground p-3 border rounded-lg shadow-lg max-w-xs">
           <p className="font-medium text-sm mb-2">{label}</p>
-          <p className="text-sm text-purple-600">
+          <p className="text-sm text-primary">
             Aashirvaad: ₹{data.aashirvaaPrice}
           </p>
-          <p className="text-sm text-blue-600">
+          <p className="text-sm text-muted-foreground">
             Competitor Avg: ₹{data.competitorAvg}
           </p>
-          <p className="text-sm text-green-600">
+          <p className="text-sm text-chart-1">
             Price Index: {data.priceIndex.toFixed(1)}
           </p>
-          <p className="text-sm text-orange-600">
+          <p className="text-sm text-chart-2">
             Margin: {data.margin > 0 ? '+' : ''}{data.margin.toFixed(1)}%
           </p>
         </div>
@@ -106,15 +106,15 @@ export function PricingComparisonChart({
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
-        <div className="bg-white p-3 border rounded-lg shadow-lg max-w-xs">
+        <div className="bg-popover text-popover-foreground p-3 border rounded-lg shadow-lg max-w-xs">
           <p className="font-medium text-sm mb-2">{data.sku}</p>
-          <p className="text-sm text-purple-600">
+          <p className="text-sm text-primary">
             Aashirvaad: ₹{data.aashirvaaPrice}
           </p>
-          <p className="text-sm text-blue-600">
+          <p className="text-sm text-muted-foreground">
             Competitor: ₹{data.competitorAvg}
           </p>
-          <p className="text-sm text-green-600">
+          <p className="text-sm text-chart-1">
             Difference: {data.margin > 0 ? '+' : ''}₹{Math.round(data.aashirvaaPrice - data.competitorAvg)}
           </p>
         </div>
@@ -165,31 +165,31 @@ export function PricingComparisonChart({
         <div className="space-y-4">
           {/* Key metrics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-            <div className="bg-green-50 p-3 rounded-lg">
-              <div className="text-sm text-green-600 font-medium">Competitive SKUs</div>
-              <div className="text-lg font-bold text-green-800">
+            <div className="bg-chart-1/10 dark:bg-chart-1/20 p-3 rounded-lg">
+              <div className="text-sm text-chart-1 font-medium">Competitive SKUs</div>
+              <div className="text-lg font-bold">
                 {competitiveCount}/{aggregatedData.length}
               </div>
-              <div className="text-xs text-green-600">Price Index &lt; 100</div>
+              <div className="text-xs text-muted-foreground">Price Index &lt; 100</div>
             </div>
-            <div className="bg-blue-50 p-3 rounded-lg">
-              <div className="text-sm text-blue-600 font-medium">Avg Price Index</div>
-              <div className="text-lg font-bold text-blue-800">
+            <div className="bg-chart-2/10 dark:bg-chart-2/20 p-3 rounded-lg">
+              <div className="text-sm text-chart-2 font-medium">Avg Price Index</div>
+              <div className="text-lg font-bold">
                 {avgPriceIndex.toFixed(1)}
               </div>
             </div>
-            <div className="bg-orange-50 p-3 rounded-lg">
-              <div className="text-sm text-orange-600 font-medium">Avg Margin</div>
-              <div className="text-lg font-bold text-orange-800">
+            <div className="bg-chart-3/10 dark:bg-chart-3/20 p-3 rounded-lg">
+              <div className="text-sm text-chart-3 font-medium">Avg Margin</div>
+              <div className="text-lg font-bold">
                 {avgMargin > 0 ? '+' : ''}{avgMargin.toFixed(1)}%
               </div>
             </div>
-            <div className="bg-red-50 p-3 rounded-lg">
-              <div className="text-sm text-red-600 font-medium">Premium SKUs</div>
-              <div className="text-lg font-bold text-red-800">
+            <div className="bg-chart-4/10 dark:bg-chart-4/20 p-3 rounded-lg">
+              <div className="text-sm text-chart-4 font-medium">Premium SKUs</div>
+              <div className="text-lg font-bold">
                 {premiumCount}/{aggregatedData.length}
               </div>
-              <div className="text-xs text-red-600">Price Index ≥ 105</div>
+              <div className="text-xs text-muted-foreground">Price Index ≥ 105</div>
             </div>
           </div>
 
@@ -198,7 +198,7 @@ export function PricingComparisonChart({
             <ResponsiveContainer width="100%" height="100%">
               {chartType === 'bar' ? (
                 <BarChart data={sortedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="currentColor" opacity={0.1} />
                   <XAxis 
                     dataKey="sku" 
                     tick={{ fontSize: 10 }}
@@ -220,7 +220,7 @@ export function PricingComparisonChart({
                 </BarChart>
               ) : (
                 <ScatterChart data={aggregatedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="currentColor" opacity={0.1} />
                   <XAxis 
                     type="number" 
                     dataKey="competitorAvg" 

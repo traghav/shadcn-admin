@@ -105,31 +105,31 @@ export class ErrorBoundary extends Component<Props, State> {
         <Card className={`max-w-2xl mx-auto mt-8 ${this.props.className}`}>
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
-              <div className="p-3 bg-red-100 rounded-full">
-                <AlertTriangle className="w-8 h-8 text-red-600" />
+              <div className="p-3 bg-destructive/10 dark:bg-destructive/20 rounded-full">
+                <AlertTriangle className="w-8 h-8 text-destructive" />
               </div>
             </div>
-            <CardTitle className="text-red-600">Something went wrong</CardTitle>
+            <CardTitle className="text-destructive">Something went wrong</CardTitle>
             <CardDescription>
               An unexpected error occurred while rendering this component
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {this.state.error && (
-              <Alert className="border-red-200 bg-red-50">
-                <Bug className="h-4 w-4 text-red-600" />
-                <AlertDescription className="text-red-800">
+              <Alert className="border-destructive/50 bg-destructive/10 dark:bg-destructive/5">
+                <Bug className="h-4 w-4 text-destructive" />
+                <AlertDescription className="text-destructive-foreground">
                   <strong>Error:</strong> {this.state.error.message}
                 </AlertDescription>
               </Alert>
             )}
 
             {this.props.showDetails && this.state.errorInfo && (
-              <details className="bg-gray-50 p-4 rounded-lg border">
-                <summary className="cursor-pointer font-medium text-gray-700 mb-2">
+              <details className="bg-muted/50 dark:bg-muted/20 p-4 rounded-lg border">
+                <summary className="cursor-pointer font-medium mb-2">
                   Error Details
                 </summary>
-                <pre className="text-xs text-gray-600 overflow-auto max-h-40">
+                <pre className="text-xs text-muted-foreground overflow-auto max-h-40">
                   {this.state.error?.stack}
                   {'\n\nComponent Stack:'}
                   {this.state.errorInfo.componentStack}
@@ -165,7 +165,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </div>
 
             {this.state.retryCount > 0 && (
-              <p className="text-sm text-gray-500 text-center">
+              <p className="text-sm text-muted-foreground text-center">
                 Retry attempts: {this.state.retryCount}/3
               </p>
             )}
@@ -218,8 +218,8 @@ export function ChartErrorBoundary({ children, className }: { children: ReactNod
       fallback={
         <Card className="h-80 flex items-center justify-center">
           <CardContent className="text-center">
-            <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-            <CardTitle className="text-red-600 mb-2">Chart Loading Error</CardTitle>
+            <AlertTriangle className="w-12 h-12 text-destructive mx-auto mb-4" />
+            <CardTitle className="text-destructive mb-2">Chart Loading Error</CardTitle>
             <CardDescription>
               Unable to load chart data. Please try refreshing the page.
             </CardDescription>
@@ -248,8 +248,8 @@ export function TableErrorBoundary({ children, className }: { children: ReactNod
       fallback={
         <Card>
           <CardContent className="py-8 text-center">
-            <AlertTriangle className="w-8 h-8 text-red-500 mx-auto mb-4" />
-            <CardTitle className="text-red-600 mb-2">Table Loading Error</CardTitle>
+            <AlertTriangle className="w-8 h-8 text-destructive mx-auto mb-4" />
+            <CardTitle className="text-destructive mb-2">Table Loading Error</CardTitle>
             <CardDescription>
               Unable to load table data. Please try again.
             </CardDescription>

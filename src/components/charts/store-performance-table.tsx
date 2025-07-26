@@ -156,11 +156,11 @@ export function StorePerformanceTable({
 
   // Get availability badge
   const getAvailabilityBadge = (availability: number) => {
-    if (availability >= 95) return { color: 'bg-green-100 text-green-800', label: 'Excellent' }
-    if (availability >= 90) return { color: 'bg-lime-100 text-lime-800', label: 'Very Good' }
-    if (availability >= 85) return { color: 'bg-yellow-100 text-yellow-800', label: 'Good' }
-    if (availability >= 80) return { color: 'bg-orange-100 text-orange-800', label: 'Fair' }
-    return { color: 'bg-red-100 text-red-800', label: 'Poor' }
+    if (availability >= 95) return { color: 'bg-chart-1/20 text-chart-1 dark:bg-chart-1/10', label: 'Excellent' }
+    if (availability >= 90) return { color: 'bg-chart-2/20 text-chart-2 dark:bg-chart-2/10', label: 'Very Good' }
+    if (availability >= 85) return { color: 'bg-chart-3/20 text-chart-3 dark:bg-chart-3/10', label: 'Good' }
+    if (availability >= 80) return { color: 'bg-chart-4/20 text-chart-4 dark:bg-chart-4/10', label: 'Fair' }
+    return { color: 'bg-destructive/20 text-destructive dark:bg-destructive/10', label: 'Poor' }
   }
 
   // Calculate summary statistics
@@ -330,36 +330,36 @@ export function StorePerformanceTable({
         <div className="space-y-6">
           {/* Summary Statistics */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <div className="bg-blue-50 p-3 rounded-lg">
-              <div className="text-sm text-blue-600 font-medium">Total Stores</div>
-              <div className="text-lg font-bold text-blue-800">
+            <div className="bg-primary/10 dark:bg-primary/5 p-3 rounded-lg">
+              <div className="text-sm text-primary font-medium">Total Stores</div>
+              <div className="text-lg font-bold">
                 {summaryStats.totalStores}
               </div>
             </div>
-            <div className="bg-green-50 p-3 rounded-lg">
-              <div className="text-sm text-green-600 font-medium">Avg Availability</div>
-              <div className="text-lg font-bold text-green-800">
+            <div className="bg-chart-1/10 dark:bg-chart-1/5 p-3 rounded-lg">
+              <div className="text-sm text-chart-1 font-medium">Avg Availability</div>
+              <div className="text-lg font-bold">
                 {summaryStats.avgAvailability.toFixed(1)}%
               </div>
             </div>
-            <div className="bg-purple-50 p-3 rounded-lg">
-              <div className="text-sm text-purple-600 font-medium">Avg Order Value</div>
-              <div className="text-lg font-bold text-purple-800">
+            <div className="bg-chart-2/10 dark:bg-chart-2/5 p-3 rounded-lg">
+              <div className="text-sm text-chart-2 font-medium">Avg Order Value</div>
+              <div className="text-lg font-bold">
                 ₹{summaryStats.avgOrderValue.toFixed(0)}
               </div>
             </div>
-            <div className="bg-orange-50 p-3 rounded-lg">
-              <div className="text-sm text-orange-600 font-medium">Total Orders</div>
-              <div className="text-lg font-bold text-orange-800">
+            <div className="bg-chart-3/10 dark:bg-chart-3/5 p-3 rounded-lg">
+              <div className="text-sm text-chart-3 font-medium">Total Orders</div>
+              <div className="text-lg font-bold">
                 {(summaryStats.totalOrders / 1000).toFixed(0)}k
               </div>
             </div>
-            <div className="bg-emerald-50 p-3 rounded-lg">
-              <div className="text-sm text-emerald-600 font-medium">Excellent Stores</div>
-              <div className="text-lg font-bold text-emerald-800">
+            <div className="bg-chart-4/10 dark:bg-chart-4/5 p-3 rounded-lg">
+              <div className="text-sm text-chart-4 font-medium">Excellent Stores</div>
+              <div className="text-lg font-bold">
                 {summaryStats.excellentStores}
               </div>
-              <div className="text-xs text-emerald-600">≥95% availability</div>
+              <div className="text-xs text-muted-foreground">≥95% availability</div>
             </div>
           </div>
 
@@ -367,7 +367,7 @@ export function StorePerformanceTable({
           <div className="space-y-4">
             <div className="flex items-center gap-2 flex-wrap">
               <div className="relative flex-1 min-w-64">
-                <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
                   placeholder="Search stores, cities, or platforms..."
                   value={searchTerm}
@@ -502,11 +502,11 @@ export function StorePerformanceTable({
                   const daysSinceStockout = Math.floor((Date.now() - new Date(store.lastStockout).getTime()) / (1000 * 60 * 60 * 24))
                   
                   return (
-                    <TableRow key={store.id} className="hover:bg-gray-50">
+                    <TableRow key={store.id} className="hover:bg-muted/50 dark:hover:bg-muted/20">
                       <TableCell className="font-medium">
                         <div>
                           <div className="font-medium text-sm">{store.storeName}</div>
-                          <div className="text-xs text-gray-500">{store.id}</div>
+                          <div className="text-xs text-muted-foreground">{store.id}</div>
                         </div>
                       </TableCell>
                       <TableCell>{store.city}</TableCell>
@@ -546,7 +546,7 @@ export function StorePerformanceTable({
                       <TableCell className="text-center">
                         <div className="space-y-1">
                           <div className="text-sm">{daysSinceStockout} days ago</div>
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-muted-foreground">
                             {new Date(store.lastStockout).toLocaleDateString()}
                           </div>
                         </div>
@@ -561,7 +561,7 @@ export function StorePerformanceTable({
           {/* Pagination */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Items per page:</span>
+              <span className="text-sm text-muted-foreground">Items per page:</span>
               <Select value={itemsPerPage.toString()} onValueChange={(value) => {
                 setItemsPerPage(parseInt(value))
                 setCurrentPage(1)
@@ -579,7 +579,7 @@ export function StorePerformanceTable({
             </div>
             
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-muted-foreground">
                 Page {currentPage} of {totalPages} 
                 ({summaryStats.totalStores} total stores)
               </span>
