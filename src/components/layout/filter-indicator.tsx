@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button'
 import { useFilterStore } from '@/stores/filterStore'
 import { 
   platforms, 
+  brands,
   cities, 
   aashirvaaProducts, 
-  filterOptions,
+  darkStores,
   dateRanges 
 } from '@/data/mock-kpi-data'
 
@@ -18,16 +19,20 @@ interface FilterIndicatorProps {
 export function FilterIndicator({ className }: FilterIndicatorProps) {
   const {
     selectedPlatforms,
+    selectedBrands,
     selectedCategories,
     selectedSkus,
     selectedCities,
+    selectedDarkStores,
     selectedKeywords,
     dateRangePreset,
     activeTab,
     setSelectedPlatforms,
+    setSelectedBrands,
     setSelectedCategories,
     setSelectedSkus,
     setSelectedCities,
+    setSelectedDarkStores,
     setSelectedKeywords,
     hasActiveFilters,
     resetFilters,
@@ -50,6 +55,19 @@ export function FilterIndicator({ className }: FilterIndicatorProps) {
         key: 'platforms',
         label: `Platforms: ${platformNames.join(', ')}`,
         onRemove: () => setSelectedPlatforms(platforms.map(p => p.id))
+      })
+    }
+
+    // Brand filters
+    if (selectedBrands.length > 0) {
+      const brandNames = selectedBrands.map(id => 
+        brands.find(b => b.id === id)?.name
+      ).filter(Boolean)
+      
+      badges.push({
+        key: 'brands',
+        label: `Brands: ${brandNames.join(', ')}`,
+        onRemove: () => setSelectedBrands([])
       })
     }
 
@@ -89,6 +107,23 @@ export function FilterIndicator({ className }: FilterIndicatorProps) {
         key: 'cities',
         label: `Cities: ${cityNames.join(', ')}`,
         onRemove: () => setSelectedCities([])
+      })
+    }
+
+    // Dark Store filters
+    if (selectedDarkStores.length > 0) {
+      const storeNames = selectedDarkStores.map(id => 
+        darkStores.find(s => s.id === id)?.name
+      ).filter(Boolean)
+      
+      const displayText = storeNames.length > 2 
+        ? `${storeNames.slice(0, 2).join(', ')} +${storeNames.length - 2} more`
+        : storeNames.join(', ')
+      
+      badges.push({
+        key: 'darkStores',
+        label: `Stores: ${displayText}`,
+        onRemove: () => setSelectedDarkStores([])
       })
     }
 

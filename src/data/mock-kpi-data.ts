@@ -7,12 +7,28 @@ export interface Platform {
   logo?: string
 }
 
+export interface Brand {
+  id: string
+  name: string
+  categories: string[]
+}
+
 export interface AashirvaaProduct {
   id: string
   name: string
+  brandId: string
   category: 'Atta' | 'Ready-to-Eat' | 'Spices' | 'Salt & Sugar'
   variants: string[]
   basePrice: number
+}
+
+export interface DarkStore {
+  id: string
+  name: string
+  cityId: string
+  platformId: string
+  address: string
+  isActive: boolean
 }
 
 export interface City {
@@ -35,6 +51,17 @@ export const platforms: Platform[] = [
   { id: 'zepto', name: 'Zepto' }
 ]
 
+export const brands: Brand[] = [
+  { id: 'aashirvaad', name: 'Aashirvaad', categories: ['Atta', 'Ready-to-Eat', 'Spices', 'Salt & Sugar'] },
+  { id: 'fortune', name: 'Fortune', categories: ['Atta', 'Spices'] },
+  { id: 'tata-sampann', name: 'Tata Sampann', categories: ['Atta', 'Spices', 'Ready-to-Eat'] },
+  { id: 'patanjali', name: 'Patanjali', categories: ['Atta', 'Spices', 'Salt & Sugar'] },
+  { id: 'mdh', name: 'MDH', categories: ['Spices'] },
+  { id: 'everest', name: 'Everest', categories: ['Spices'] },
+  { id: 'mtr', name: 'MTR', categories: ['Ready-to-Eat'] },
+  { id: 'haldirams', name: 'Haldirams', categories: ['Ready-to-Eat'] }
+]
+
 export const cities: City[] = [
   { id: 'mumbai', name: 'Mumbai', darkStores: 22, population: 12500000 },
   { id: 'delhi', name: 'Delhi', darkStores: 20, population: 11000000 },
@@ -47,6 +74,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'whole-wheat-atta-5kg',
     name: 'Whole Wheat Atta',
+    brandId: 'aashirvaad',
     category: 'Atta',
     variants: ['5kg', '10kg'],
     basePrice: 315
@@ -54,6 +82,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'multigrain-atta-5kg',
     name: 'Multigrain Atta',
+    brandId: 'aashirvaad',
     category: 'Atta',
     variants: ['5kg'],
     basePrice: 385
@@ -61,6 +90,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'instant-poha',
     name: 'Instant Poha',
+    brandId: 'aashirvaad',
     category: 'Ready-to-Eat',
     variants: ['500g'],
     basePrice: 65
@@ -68,6 +98,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'instant-upma',
     name: 'Instant Upma',
+    brandId: 'aashirvaad',
     category: 'Ready-to-Eat',
     variants: ['500g'],
     basePrice: 68
@@ -75,6 +106,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'instant-khichdi',
     name: 'Instant Khichdi',
+    brandId: 'aashirvaad',
     category: 'Ready-to-Eat',
     variants: ['500g'],
     basePrice: 72
@@ -82,6 +114,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'turmeric-powder',
     name: 'Turmeric Powder',
+    brandId: 'aashirvaad',
     category: 'Spices',
     variants: ['200g', '500g'],
     basePrice: 145
@@ -89,6 +122,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'chilli-powder',
     name: 'Chilli Powder',
+    brandId: 'aashirvaad',
     category: 'Spices',
     variants: ['200g', '500g'],
     basePrice: 158
@@ -96,6 +130,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'coriander-powder',
     name: 'Coriander Powder',
+    brandId: 'aashirvaad',
     category: 'Spices',
     variants: ['200g', '500g'],
     basePrice: 132
@@ -103,6 +138,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'iodized-salt',
     name: 'Iodized Salt',
+    brandId: 'aashirvaad',
     category: 'Salt & Sugar',
     variants: ['1kg'],
     basePrice: 28
@@ -110,10 +146,52 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'crystal-salt',
     name: 'Crystal Salt',
+    brandId: 'aashirvaad',
     category: 'Salt & Sugar',
     variants: ['1kg'],
     basePrice: 32
   }
+]
+
+// Dark store data - individual stores within each city/platform combination
+export const darkStores: DarkStore[] = [
+  // Mumbai stores
+  { id: 'mumbai-blinkit-01', name: 'Bandra West Hub', cityId: 'mumbai', platformId: 'blinkit', address: 'Linking Road, Bandra West', isActive: true },
+  { id: 'mumbai-blinkit-02', name: 'Powai Central', cityId: 'mumbai', platformId: 'blinkit', address: 'Hiranandani Gardens, Powai', isActive: true },
+  { id: 'mumbai-blinkit-03', name: 'Andheri Express', cityId: 'mumbai', platformId: 'blinkit', address: 'Veera Desai Road, Andheri West', isActive: true },
+  { id: 'mumbai-blinkit-04', name: 'Worli Sea Face', cityId: 'mumbai', platformId: 'blinkit', address: 'Annie Besant Road, Worli', isActive: true },
+  { id: 'mumbai-swiggy-01', name: 'Kurla Express', cityId: 'mumbai', platformId: 'swiggy-instamart', address: 'LBS Road, Kurla West', isActive: true },
+  { id: 'mumbai-swiggy-02', name: 'Goregaon Central', cityId: 'mumbai', platformId: 'swiggy-instamart', address: 'Malad Link Road, Goregaon West', isActive: true },
+  { id: 'mumbai-swiggy-03', name: 'Marine Drive Hub', cityId: 'mumbai', platformId: 'swiggy-instamart', address: 'Nariman Point, Marine Drive', isActive: true },
+  { id: 'mumbai-zepto-01', name: 'Juhu Beach Store', cityId: 'mumbai', platformId: 'zepto', address: 'Juhu Tara Road, Juhu', isActive: true },
+  { id: 'mumbai-zepto-02', name: 'Thane Station', cityId: 'mumbai', platformId: 'zepto', address: 'Station Road, Thane West', isActive: true },
+  
+  // Delhi stores
+  { id: 'delhi-blinkit-01', name: 'CP Central', cityId: 'delhi', platformId: 'blinkit', address: 'Connaught Place, Central Delhi', isActive: true },
+  { id: 'delhi-blinkit-02', name: 'GK-II Hub', cityId: 'delhi', platformId: 'blinkit', address: 'M Block Market, Greater Kailash II', isActive: true },
+  { id: 'delhi-blinkit-03', name: 'Vasant Kunj Express', cityId: 'delhi', platformId: 'blinkit', address: 'DLF Mall Road, Vasant Kunj', isActive: true },
+  { id: 'delhi-swiggy-01', name: 'Lajpat Nagar Central', cityId: 'delhi', platformId: 'swiggy-instamart', address: 'Ring Road, Lajpat Nagar', isActive: true },
+  { id: 'delhi-swiggy-02', name: 'Karol Bagh Market', cityId: 'delhi', platformId: 'swiggy-instamart', address: 'Ajmal Khan Road, Karol Bagh', isActive: true },
+  { id: 'delhi-zepto-01', name: 'Dwarka Express', cityId: 'delhi', platformId: 'zepto', address: 'Sector 12, Dwarka', isActive: true },
+  { id: 'delhi-zepto-02', name: 'Rohini Hub', cityId: 'delhi', platformId: 'zepto', address: 'Sector 7, Rohini', isActive: true },
+  
+  // Bangalore stores
+  { id: 'bangalore-blinkit-01', name: 'Koramangala Hub', cityId: 'bangalore', platformId: 'blinkit', address: '80 Feet Road, Koramangala', isActive: true },
+  { id: 'bangalore-blinkit-02', name: 'Indiranagar Central', cityId: 'bangalore', platformId: 'blinkit', address: '100 Feet Road, Indiranagar', isActive: true },
+  { id: 'bangalore-swiggy-01', name: 'Whitefield Tech', cityId: 'bangalore', platformId: 'swiggy-instamart', address: 'ITPL Main Road, Whitefield', isActive: true },
+  { id: 'bangalore-swiggy-02', name: 'HSR Layout Express', cityId: 'bangalore', platformId: 'swiggy-instamart', address: 'Sector 2, HSR Layout', isActive: true },
+  { id: 'bangalore-zepto-01', name: 'Jayanagar Central', cityId: 'bangalore', platformId: 'zepto', address: '4th Block, Jayanagar', isActive: true },
+  
+  // Hyderabad stores
+  { id: 'hyderabad-blinkit-01', name: 'HITEC City Hub', cityId: 'hyderabad', platformId: 'blinkit', address: 'Cyberabad, HITEC City', isActive: true },
+  { id: 'hyderabad-blinkit-02', name: 'Banjara Hills Central', cityId: 'hyderabad', platformId: 'blinkit', address: 'Road No. 12, Banjara Hills', isActive: true },
+  { id: 'hyderabad-swiggy-01', name: 'Gachibowli Express', cityId: 'hyderabad', platformId: 'swiggy-instamart', address: 'Financial District, Gachibowli', isActive: true },
+  { id: 'hyderabad-zepto-01', name: 'Madhapur Tech Hub', cityId: 'hyderabad', platformId: 'zepto', address: 'KPHB Road, Madhapur', isActive: true },
+  
+  // Chennai stores
+  { id: 'chennai-blinkit-01', name: 'T Nagar Central', cityId: 'chennai', platformId: 'blinkit', address: 'Ranganathan Street, T Nagar', isActive: true },
+  { id: 'chennai-swiggy-01', name: 'Velachery Hub', cityId: 'chennai', platformId: 'swiggy-instamart', address: 'Vijayanagar, Velachery', isActive: true },
+  { id: 'chennai-zepto-01', name: 'Anna Nagar Express', cityId: 'chennai', platformId: 'zepto', address: '2nd Avenue, Anna Nagar', isActive: true }
 ]
 
 export const competitors: Competitor[] = [

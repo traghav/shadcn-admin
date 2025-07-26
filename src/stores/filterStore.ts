@@ -2,8 +2,10 @@ import { create } from 'zustand'
 import { persist, subscribeWithSelector } from 'zustand/middleware'
 import { 
   platforms, 
+  brands,
   cities, 
   aashirvaaProducts, 
+  darkStores,
   filterOptions,
   dateRanges 
 } from '@/data/mock-kpi-data'
@@ -17,6 +19,7 @@ export interface DateRange {
 export interface FilterState {
   // Core filter values
   selectedPlatforms: string[]
+  selectedBrands: string[]
   selectedCategories: string[]
   selectedSkus: string[]
   selectedCities: string[]
@@ -33,6 +36,7 @@ export interface FilterState {
   
   // Filter actions
   setSelectedPlatforms: (platforms: string[]) => void
+  setSelectedBrands: (brands: string[]) => void
   setSelectedCategories: (categories: string[]) => void
   setSelectedSkus: (skus: string[]) => void
   setSelectedCities: (cities: string[]) => void
@@ -65,6 +69,7 @@ const defaultDateRange: DateRange = {
 
 const initialState = {
   selectedPlatforms: platforms.map(p => p.id),
+  selectedBrands: [],
   selectedCategories: [],
   selectedSkus: [],
   selectedCities: [],
@@ -86,6 +91,9 @@ export const useFilterStore = create<FilterState>()(
         // Filter setters with timestamp updates
         setSelectedPlatforms: (selectedPlatforms) =>
           set({ selectedPlatforms, lastUpdated: Date.now() }),
+        
+        setSelectedBrands: (selectedBrands) =>
+          set({ selectedBrands, lastUpdated: Date.now() }),
         
         setSelectedCategories: (selectedCategories) =>
           set({ selectedCategories, lastUpdated: Date.now() }),
@@ -159,6 +167,7 @@ export const useFilterStore = create<FilterState>()(
       hasActiveFilters: () => {
         const state = get()
         return (
+          state.selectedBrands.length > 0 ||
           state.selectedCategories.length > 0 ||
           state.selectedSkus.length > 0 ||
           state.selectedCities.length > 0 ||
@@ -172,6 +181,7 @@ export const useFilterStore = create<FilterState>()(
         const state = get()
         let count = 0
         
+        if (state.selectedBrands.length > 0) count++
         if (state.selectedCategories.length > 0) count++
         if (state.selectedSkus.length > 0) count++
         if (state.selectedCities.length > 0) count++
@@ -186,6 +196,7 @@ export const useFilterStore = create<FilterState>()(
       name: 'kelpie-filters',
       partialize: (state) => ({
         selectedPlatforms: state.selectedPlatforms,
+        selectedBrands: state.selectedBrands,
         selectedCategories: state.selectedCategories,
         selectedSkus: state.selectedSkus,
         selectedCities: state.selectedCities,
@@ -201,9 +212,12 @@ export const useFilterStore = create<FilterState>()(
 
 // Optimized selectors using shallow equality
 export const useFilterPlatforms = () => useFilterStore(state => state.selectedPlatforms)
+export const useFilterBrands = () => useFilterStore(state => state.selectedBrands)
 export const useFilterCategories = () => useFilterStore(state => state.selectedCategories)
 export const useFilterSkus = () => useFilterStore(state => state.selectedSkus)
 export const useFilterCities = () => useFilterStore(state => state.selectedCities)
+export const useFilterDarkStores = () => useFilterStore(state => state.selectedDarkStores)
+export const useFilterKeywords = () => useFilterStore(state => state.selectedKeywords)
 export const useFilterDateRange = () => useFilterStore(state => state.dateRange)
 export const useFilterActiveTab = () => useFilterStore(state => state.activeTab)
 export const useFilterLoading = () => useFilterStore(state => state.isLoading)
@@ -216,14 +230,21 @@ export const useActiveFilterCount = () => useFilterStore(state => state.getActiv
 // Derived selectors for computed values with memoization
 export const useFilteredData = () => {
   const selectedPlatforms = useFilterPlatforms()
+  const selectedBrands = useFilterBrands()
   const selectedCategories = useFilterCategories()
   const selectedSkus = useFilterSkus()
   const selectedCities = useFilterCities()
+  const selectedDarkStores = useFilterDarkStores()
   
   return useMemo(() => {
     // Helper to check if a platform is selected
     const isPlatformSelected = (platformId: string) =>
       selectedPlatforms.includes(platformId)
+    
+    // Helper to check if a brand is selected
+    const isBrandSelected = (brandId: string) =>
+      selectedBrands.length === 0 || 
+      selectedBrands.includes(brandId)
     
     // Helper to check if a category is selected
     const isCategorySelected = (category: string) =>
@@ -240,14 +261,28 @@ export const useFilteredData = () => {
       selectedCities.length === 0 || 
       selectedCities.includes(cityId)
     
-    // Get filtered SKUs based on category selection
+    // Helper to check if a dark store is selected
+    const isDarkStoreSelected = (storeId: string) =>
+      selectedDarkStores.length === 0 || 
+      selectedDarkStores.includes(storeId)
+    
+    // Get filtered SKUs based on brand and category selection
     const getFilteredSkus = () => {
-      if (selectedCategories.length === 0) {
-        return aashirvaaProducts
+      let filteredSkus = aashirvaaProducts
+      
+      if (selectedBrands.length > 0) {
+        filteredSkus = filteredSkus.filter(product =>
+          selectedBrands.includes(product.brandId)
+        )
       }
-      return aashirvaaProducts.filter(product =>
-        selectedCategories.includes(product.category)
-      )
+      
+      if (selectedCategories.length > 0) {
+        filteredSkus = filteredSkus.filter(product =>
+          selectedCategories.includes(product.category)
+        )
+      }
+      
+      return filteredSkus
     }
     
     // Get filtered cities based on selection
@@ -260,15 +295,37 @@ export const useFilteredData = () => {
       )
     }
     
+    // Get filtered dark stores based on city and platform selection
+    const getFilteredDarkStores = () => {
+      let filteredStores = darkStores.filter(store => store.isActive)
+      
+      if (selectedCities.length > 0) {
+        filteredStores = filteredStores.filter(store =>
+          selectedCities.includes(store.cityId)
+        )
+      }
+      
+      if (selectedPlatforms.length > 0 && selectedPlatforms.length < platforms.length) {
+        filteredStores = filteredStores.filter(store =>
+          selectedPlatforms.includes(store.platformId)
+        )
+      }
+      
+      return filteredStores
+    }
+    
     return {
       isPlatformSelected,
+      isBrandSelected,
       isCategorySelected,
       isSkuSelected,
       isCitySelected,
+      isDarkStoreSelected,
       getFilteredSkus,
       getFilteredCities,
+      getFilteredDarkStores,
     }
-  }, [selectedPlatforms, selectedCategories, selectedSkus, selectedCities])
+  }, [selectedPlatforms, selectedBrands, selectedCategories, selectedSkus, selectedCities, selectedDarkStores])
 }
 
 // Hook for URL synchronization (to be implemented)
