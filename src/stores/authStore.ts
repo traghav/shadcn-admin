@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 import { create } from 'zustand'
 
 const ACCESS_TOKEN = 'thisisjustarandomstring'
+const USER_DATA = 'auth_user_data'
 
 interface AuthUser {
   accountNo: string
@@ -24,11 +25,22 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()((set) => {
   const cookieState = Cookies.get(ACCESS_TOKEN)
   const initToken = cookieState ? JSON.parse(cookieState) : ''
+  
+  const userDataState = Cookies.get(USER_DATA)
+  const initUser = userDataState ? JSON.parse(userDataState) : null
+  
   return {
     auth: {
-      user: null,
+      user: initUser,
       setUser: (user) =>
-        set((state) => ({ ...state, auth: { ...state.auth, user } })),
+        set((state) => {
+          if (user) {
+            Cookies.set(USER_DATA, JSON.stringify(user))
+          } else {
+            Cookies.remove(USER_DATA)
+          }
+          return { ...state, auth: { ...state.auth, user } }
+        }),
       accessToken: initToken,
       setAccessToken: (accessToken) =>
         set((state) => {
@@ -43,6 +55,7 @@ export const useAuthStore = create<AuthState>()((set) => {
       reset: () =>
         set((state) => {
           Cookies.remove(ACCESS_TOKEN)
+          Cookies.remove(USER_DATA)
           return {
             ...state,
             auth: { ...state.auth, user: null, accessToken: '' },
