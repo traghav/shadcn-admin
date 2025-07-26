@@ -16,13 +16,10 @@ export default function PricingAnalytics() {
       title="Pricing Analytics"
       subtitle="Monitor Aashirvaad pricing strategy and competitive positioning"
       actions={
-        <div className="flex gap-2">
-          <PricingCSVExport
-            data={csvData}
-            size="sm"
-          />
-          <Button>Price Alert</Button>
-        </div>
+        <PricingCSVExport
+          data={csvData}
+          size="sm"
+        />
       }
     >
       <Tabs defaultValue="overview" className="space-y-6">

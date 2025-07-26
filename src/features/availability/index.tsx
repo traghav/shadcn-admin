@@ -90,16 +90,11 @@ const AvailabilityAnalyticsComponent = memo(() => {
       subtitle="Monitor Aashirvaad product availability across quick commerce platforms"
       actions={
         <SmoothTransition>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <AvailabilityCSVExport
-              data={csvData}
-              size="sm"
-              disabled={csvLoading}
-            />
-            <Button size="sm">
-              Restock Alert
-            </Button>
-          </div>
+          <AvailabilityCSVExport
+            data={csvData}
+            size="sm"
+            disabled={csvLoading}
+          />
         </SmoothTransition>
       }
     >

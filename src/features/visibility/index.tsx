@@ -15,13 +15,10 @@ export default function VisibilityAnalytics() {
       title="Visibility Analytics"
       subtitle="Track Aashirvaad brand visibility and search performance across platforms"
       actions={
-        <div className="flex gap-2">
-          <VisibilityCSVExport
-            data={csvData}
-            size="sm"
-          />
-          <Button>Optimize Visibility</Button>
-        </div>
+        <VisibilityCSVExport
+          data={csvData}
+          size="sm"
+        />
       }
     >
       <Tabs defaultValue="overview" className="space-y-6">

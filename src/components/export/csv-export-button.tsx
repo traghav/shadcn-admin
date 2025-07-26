@@ -23,7 +23,7 @@ export function CSVExportButton({
   data,
   className,
   variant = 'outline',
-  size = 'default',
+  size = 'sm',
   children
 }: CSVExportButtonProps) {
   const [isExporting, setIsExporting] = useState(false)
