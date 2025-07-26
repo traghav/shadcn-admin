@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { AvailabilityHeatmap } from './availability-heatmap'
-import { useFilterStore, useFilteredData } from '@/stores/filterStore'
-import { visualizationData, type HeatmapData } from '@/data/mock-kpi-data'
+import { useFilteredData } from '@/stores/filterStore'
+import { visualizationData } from '@/data/mock-kpi-data'
 
 interface FilteredAvailabilityHeatmapProps {
   title?: string
@@ -12,13 +12,7 @@ export function FilteredAvailabilityHeatmap({
   title = "Availability Heatmap",
   description = "SKU availability across cities and platforms"
 }: FilteredAvailabilityHeatmapProps) {
-  const {
-    selectedPlatforms,
-    selectedCategories,
-    selectedSkus,
-    selectedCities,
-    dateRange,
-  } = useFilterStore()
+  // No need to destructure individual filter values - use the filtered data hook
 
   const { 
     isPlatformSelected,
@@ -33,32 +27,24 @@ export function FilteredAvailabilityHeatmap({
   const filteredData = useMemo(() => {
     let filtered = visualizationData.availabilityHeatmap
 
-    // Filter by selected platforms
-    if (selectedPlatforms.length > 0) {
-      filtered = filtered.filter(item => isPlatformSelected(item.platform))
-    }
+    // Filter by current platform (automatically handled by isPlatformSelected)
+    filtered = filtered.filter(item => isPlatformSelected(item.platform))
 
     // Filter by selected cities
-    if (selectedCities.length > 0) {
-      filtered = filtered.filter(item => isCitySelected(
-        // Map city name to ID (simple mapping for demo)
-        item.city.toLowerCase().replace(' ', '')
-      ))
-    }
+    filtered = filtered.filter(item => isCitySelected(
+      // Map city name to ID (simple mapping for demo)
+      item.city.toLowerCase().replace(' ', '')
+    ))
 
     // Filter by selected categories and SKUs
     const allowedSkus = getFilteredSkus()
-    if (selectedCategories.length > 0 || selectedSkus.length > 0) {
-      const allowedSkuNames = allowedSkus.map(sku => sku.name)
+    const allowedSkuNames = allowedSkus.map(sku => sku.name)
+    if (allowedSkuNames.length > 0) {
       filtered = filtered.filter(item => allowedSkuNames.includes(item.sku))
     }
 
     return filtered
   }, [
-    selectedPlatforms,
-    selectedCategories,
-    selectedSkus,
-    selectedCities,
     isPlatformSelected,
     isCitySelected,
     isSkuSelected,
@@ -69,21 +55,8 @@ export function FilteredAvailabilityHeatmap({
   const getFilteredDescription = () => {
     const filters = []
     
-    if (selectedPlatforms.length > 0 && selectedPlatforms.length < 3) {
-      filters.push(`${selectedPlatforms.length} platform${selectedPlatforms.length > 1 ? 's' : ''}`)
-    }
-    
-    if (selectedCategories.length > 0) {
-      filters.push(`${selectedCategories.length} categor${selectedCategories.length > 1 ? 'ies' : 'y'}`)
-    }
-    
-    if (selectedSkus.length > 0) {
-      filters.push(`${selectedSkus.length} SKU${selectedSkus.length > 1 ? 's' : ''}`)
-    }
-    
-    if (selectedCities.length > 0) {
-      filters.push(`${selectedCities.length} cit${selectedCities.length > 1 ? 'ies' : 'y'}`)
-    }
+    // For now, just return a simple description
+    filters.push('Current platform data')
 
     if (filters.length === 0) {
       return description

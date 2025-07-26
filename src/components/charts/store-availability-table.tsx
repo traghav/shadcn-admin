@@ -9,7 +9,7 @@ import { visualizationData } from '@/data/mock-kpi-data'
 import { useState, useMemo } from 'react'
 import { exportRawCSV } from '@/utils/csv-export'
 import { toast } from 'sonner'
-import { useFilterStore, useFilteredData } from '@/stores/filterStore'
+import { useFilteredData } from '@/stores/filterStore'
 
 interface StoreData {
   id: string
@@ -43,13 +43,7 @@ export function StoreAvailabilityTable({
   const [sortDirection, setSortDirection] = useState<SortDirection>(null)
   const [isExporting, setIsExporting] = useState(false)
   
-  // Get global filter state
-  const {
-    selectedPlatforms,
-    selectedCategories,
-    selectedSkus,
-    selectedCities,
-  } = useFilterStore()
+  // Use filtered data hook instead of individual filter properties
   
   const { 
     isPlatformSelected,
@@ -67,22 +61,18 @@ export function StoreAvailabilityTable({
       const matchesSearch = store.storeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            store.city.toLowerCase().includes(searchTerm.toLowerCase())
       
-      // Apply global platform filters if any are selected
-      const matchesGlobalPlatform = selectedPlatforms.length === 0 || 
-        isPlatformSelected(store.platform.toLowerCase().replace(' ', '-'))
-      
-      // Apply global city filters if any are selected
-      const matchesGlobalCity = selectedCities.length === 0 || 
-        isCitySelected(store.city.toLowerCase().replace(' ', ''))
+      // Apply global platform and city filters
+      const matchesGlobalPlatform = isPlatformSelected(store.platform.toLowerCase().replace(' ', '-'))
+      const matchesGlobalCity = isCitySelected(store.city.toLowerCase().replace(' ', ''))
       
       // Apply local table filters (these work on top of global filters)
       const matchesLocalPlatform = localPlatformFilter === 'all' || store.platform === localPlatformFilter
       const matchesLocalCity = localCityFilter === 'all' || store.city === localCityFilter
       
-      // Filter by SKUs if specific ones are selected globally
+      // Filter by SKUs based on global selection
       let matchesSkus = true
-      if (selectedCategories.length > 0 || selectedSkus.length > 0) {
-        const allowedSkus = getFilteredSkus()
+      const allowedSkus = getFilteredSkus()
+      if (allowedSkus.length > 0) {
         const allowedSkuNames = allowedSkus.map(sku => sku.name)
         // Check if any of the store's top SKUs match the filtered SKUs
         matchesSkus = store.topSkus.some(sku => allowedSkuNames.includes(sku))
@@ -119,7 +109,7 @@ export function StoreAvailabilityTable({
     
     return filtered
   }, [data, searchTerm, localPlatformFilter, localCityFilter, sortField, sortDirection, 
-      selectedPlatforms, selectedCities, selectedCategories, selectedSkus, 
+ 
       isPlatformSelected, isCitySelected, getFilteredSkus])
   
   // Handle sorting

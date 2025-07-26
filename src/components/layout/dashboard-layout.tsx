@@ -8,7 +8,7 @@ import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { GlobalFilterBar } from '@/components/layout/global-filter-bar'
 import { useFilterStore } from '@/stores/filterStore'
-import { useFilterUrlSync } from '@/hooks/use-filter-url-sync'
+// import { useFilterUrlSync } from '@/hooks/use-filter-url-sync'"
 import { FadeIn } from '@/components/ui/fade-in'
 import { SmoothTransition } from '@/components/ui/smooth-transitions'
 import { ErrorBoundary } from '@/components/ui/error-boundary'
@@ -31,7 +31,7 @@ export function DashboardLayout({
   const { setActiveTab } = useFilterStore()
   
   // Initialize URL sync
-  useFilterUrlSync()
+  // useFilterUrlSync() // Temporarily disabled
 
   // Set active tab based on current route
   React.useEffect(() => {

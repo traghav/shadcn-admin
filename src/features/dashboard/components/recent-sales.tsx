@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { useFilterStore, useFilteredData } from '@/stores/filterStore'
+import { useFilteredData, useCurrentPlatform, useFilterBrands, useFilterCategories, useFilterSkus, useFilterCities, useFilterActiveTab } from '@/stores/filterStore'
 import { useMemo } from 'react'
 
 // Define different data structures for each tab
@@ -179,13 +179,12 @@ const visibilityUpdates = [
 ]
 
 export function RecentSales() {
-  const {
-    selectedPlatforms,
-    selectedCategories,
-    selectedSkus,
-    selectedCities,
-    activeTab
-  } = useFilterStore()
+  const currentPlatform = useCurrentPlatform()
+  const selectedBrands = useFilterBrands()
+  const selectedCategories = useFilterCategories()
+  const selectedSkus = useFilterSkus()
+  const selectedCities = useFilterCities()
+  const activeTab = useFilterActiveTab()
   
   const { isPlatformSelected, isCategorySelected, isCitySelected, getFilteredSkus } = useFilteredData()
   
@@ -207,25 +206,23 @@ export function RecentSales() {
   const filteredData = useMemo(() => {
     let data = getTabData()
     
-    // Apply platform filters
-    if (selectedPlatforms.length > 0) {
-      data = data.filter(item => 
-        isPlatformSelected(item.platform.toLowerCase().replace(' ', '-'))
-      )
-    }
+    // Apply platform filters (automatically handled by isPlatformSelected)
+    data = data.filter(item => 
+      isPlatformSelected(item.platform.toLowerCase().replace(' ', '-'))
+    )
     
     // Apply city filters
-    if (selectedCities.length > 0) {
+    if (selectedCities && selectedCities.length > 0) {
       data = data.filter(item => 
         isCitySelected(item.city.toLowerCase().replace(' ', ''))
       )
     }
     
     // Apply category/SKU filters
-    if (selectedCategories.length > 0 || selectedSkus.length > 0) {
+    if ((selectedCategories && selectedCategories.length > 0) || (selectedSkus && selectedSkus.length > 0)) {
       const allowedSkus = getFilteredSkus()
       const allowedSkuNames = allowedSkus.map(sku => sku.name)
-      const allowedCategories = selectedCategories.length > 0 ? selectedCategories : allowedSkus.map(sku => sku.category)
+      const allowedCategories = (selectedCategories && selectedCategories.length > 0) ? selectedCategories : allowedSkus.map(sku => sku.category)
       
       data = data.filter(item => 
         allowedSkuNames.includes(item.product) || 
@@ -234,7 +231,7 @@ export function RecentSales() {
     }
     
     return data.slice(0, 5) // Show only top 5
-  }, [activeTab, selectedPlatforms, selectedCities, selectedCategories, selectedSkus, 
+  }, [activeTab, selectedCities, selectedCategories, selectedSkus, 
       isPlatformSelected, isCitySelected, getFilteredSkus])
   
   const getChangeColor = (changeType: string) => {

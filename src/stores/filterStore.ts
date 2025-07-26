@@ -16,9 +16,8 @@ export interface DateRange {
   to: Date | undefined
 }
 
-export interface FilterState {
-  // Core filter values
-  selectedPlatforms: string[]
+// Platform-specific filter state
+export interface PlatformFilters {
   selectedBrands: string[]
   selectedCategories: string[]
   selectedSkus: string[]
@@ -27,15 +26,24 @@ export interface FilterState {
   selectedKeywords: string[]
   dateRange: DateRange
   dateRangePreset: keyof typeof dateRanges | 'custom'
+  lastUpdated: number
+}
+
+export interface FilterState {
+  // Platform management
+  currentPlatform: string
+  platformFilters: { [platformId: string]: PlatformFilters }
   
-  // UI state
+  // Global UI state
   isFilterPanelOpen: boolean
   activeTab: 'availability' | 'pricing' | 'visibility'
   isLoading: boolean
-  lastUpdated: number
   
-  // Filter actions
-  setSelectedPlatforms: (platforms: string[]) => void
+  // Platform actions
+  setCurrentPlatform: (platformId: string) => void
+  getCurrentPlatformFilters: () => PlatformFilters
+  
+  // Filter actions (work on current platform)
   setSelectedBrands: (brands: string[]) => void
   setSelectedCategories: (categories: string[]) => void
   setSelectedSkus: (skus: string[]) => void
@@ -56,9 +64,21 @@ export interface FilterState {
   
   // Utility actions
   resetFilters: () => void
+  resetCurrentPlatformFilters: () => void
   applyFilters: () => void
   hasActiveFilters: () => boolean
   getActiveFilterCount: () => number
+  
+  // Derived getters for current platform
+  getSelectedBrands: () => string[]
+  getSelectedCategories: () => string[]
+  getSelectedSkus: () => string[]
+  getSelectedCities: () => string[]
+  getSelectedDarkStores: () => string[]
+  getSelectedKeywords: () => string[]
+  getDateRange: () => DateRange
+  getDateRangePreset: () => keyof typeof dateRanges | 'custom'
+  getLastUpdated: () => number
 }
 
 // Default values
@@ -67,8 +87,7 @@ const defaultDateRange: DateRange = {
   to: new Date()
 }
 
-const initialState = {
-  selectedPlatforms: platforms.map(p => p.id),
+const createDefaultPlatformFilters = (): PlatformFilters => ({
   selectedBrands: [],
   selectedCategories: [],
   selectedSkus: [],
@@ -77,69 +96,114 @@ const initialState = {
   selectedKeywords: [],
   dateRange: defaultDateRange,
   dateRangePreset: 'last-30-days' as const,
+  lastUpdated: Date.now(),
+})
+
+const createInitialPlatformFilters = () => {
+  const filters: { [key: string]: PlatformFilters } = {}
+  platforms.forEach(platform => {
+    filters[platform.id] = createDefaultPlatformFilters()
+  })
+  return filters
+}
+
+const initialState = {
+  currentPlatform: platforms[0]?.id || 'blinkit',
+  platformFilters: createInitialPlatformFilters(),
   isFilterPanelOpen: false,
   activeTab: 'availability' as const,
   isLoading: false,
-  lastUpdated: Date.now(),
 }
 
 export const useFilterStore = create<FilterState>()(
   persist(
-    (set, get) => ({
-      ...initialState,
-        
-        // Filter setters with timestamp updates
-        setSelectedPlatforms: (selectedPlatforms) =>
-          set({ selectedPlatforms, lastUpdated: Date.now() }),
-        
-        setSelectedBrands: (selectedBrands) =>
-          set({ selectedBrands, lastUpdated: Date.now() }),
-        
-        setSelectedCategories: (selectedCategories) =>
-          set({ selectedCategories, lastUpdated: Date.now() }),
-        
-        setSelectedSkus: (selectedSkus) =>
-          set({ selectedSkus, lastUpdated: Date.now() }),
-        
-        setSelectedCities: (selectedCities) =>
-          set({ selectedCities, lastUpdated: Date.now() }),
-        
-        setSelectedDarkStores: (selectedDarkStores) =>
-          set({ selectedDarkStores, lastUpdated: Date.now() }),
-        
-        setSelectedKeywords: (selectedKeywords) =>
-          set({ selectedKeywords, lastUpdated: Date.now() }),
-        
-        setDateRange: (dateRange) =>
-          set({ dateRange, dateRangePreset: 'custom', lastUpdated: Date.now() }),
-        
-        setDateRangePreset: (preset) => {
-          if (preset === 'custom') {
-            set({ dateRangePreset: preset, lastUpdated: Date.now() })
-            return
-          }
-          
-          const range = dateRanges[preset]
-          if (range && range.days) {
-            const to = new Date()
-            const from = new Date(Date.now() - range.days * 24 * 60 * 60 * 1000)
-            set({ 
-              dateRangePreset: preset,
-              dateRange: { from, to },
+    (set, get) => {
+      // Helper to update current platform filters
+      const updateCurrentPlatformFilters = (updates: Partial<PlatformFilters>) => {
+        const state = get()
+        const currentFilters = state.platformFilters[state.currentPlatform] || createDefaultPlatformFilters()
+        set({
+          platformFilters: {
+            ...state.platformFilters,
+            [state.currentPlatform]: {
+              ...currentFilters,
+              ...updates,
               lastUpdated: Date.now()
-            })
+            }
           }
+        })
+      }
+
+      return {
+        ...initialState,
+        
+        // Platform management
+        setCurrentPlatform: (platformId) => {
+          set({ currentPlatform: platformId })
         },
         
-        setActiveTab: (activeTab) =>
-          set({ activeTab, lastUpdated: Date.now() }),
+        getCurrentPlatformFilters: () => {
+          const state = get()
+          return state.platformFilters[state.currentPlatform] || createDefaultPlatformFilters()
+        },
         
-        // Loading state actions
-        setLoading: (isLoading) =>
-          set({ isLoading }),
+      // Filter setters with timestamp updates (work on current platform)
+      setSelectedBrands: (selectedBrands) => {
+        updateCurrentPlatformFilters({ selectedBrands })
+      },
+      
+      setSelectedCategories: (selectedCategories) => {
+        updateCurrentPlatformFilters({ selectedCategories })
+      },
+      
+      setSelectedSkus: (selectedSkus) => {
+        updateCurrentPlatformFilters({ selectedSkus })
+      },
+      
+      setSelectedCities: (selectedCities) => {
+        updateCurrentPlatformFilters({ selectedCities })
+      },
+      
+      setSelectedDarkStores: (selectedDarkStores) => {
+        updateCurrentPlatformFilters({ selectedDarkStores })
+      },
+      
+      setSelectedKeywords: (selectedKeywords) => {
+        updateCurrentPlatformFilters({ selectedKeywords })
+      },
+      
+      setDateRange: (dateRange) => {
+        updateCurrentPlatformFilters({ dateRange, dateRangePreset: 'custom' })
+      },
+      
+      setDateRangePreset: (preset) => {
+        if (preset === 'custom') {
+          updateCurrentPlatformFilters({ dateRangePreset: preset })
+          return
+        }
         
-        updateTimestamp: () =>
-          set({ lastUpdated: Date.now() }),
+        const range = dateRanges[preset]
+        if (range && range.days) {
+          const to = new Date()
+          const from = new Date(Date.now() - range.days * 24 * 60 * 60 * 1000)
+          updateCurrentPlatformFilters({ 
+            dateRangePreset: preset,
+            dateRange: { from, to }
+          })
+        }
+      },
+      
+      setActiveTab: (activeTab) => {
+        set({ activeTab })
+      },
+        
+      // Loading state actions
+      setLoading: (isLoading) =>
+        set({ isLoading }),
+      
+      updateTimestamp: () => {
+        updateCurrentPlatformFilters({})
+      },
       
       // Panel actions
       toggleFilterPanel: () =>
@@ -149,12 +213,24 @@ export const useFilterStore = create<FilterState>()(
         set({ isFilterPanelOpen }),
       
       // Utility actions
-      resetFilters: () =>
+      resetFilters: () => {
         set({
           ...initialState,
+          currentPlatform: get().currentPlatform,
           isFilterPanelOpen: get().isFilterPanelOpen,
           activeTab: get().activeTab,
-        }),
+        })
+      },
+      
+      resetCurrentPlatformFilters: () => {
+        const state = get()
+        set({
+          platformFilters: {
+            ...state.platformFilters,
+            [state.currentPlatform]: createDefaultPlatformFilters()
+          }
+        })
+      },
       
       applyFilters: () => {
         // This is where we could trigger data refetch in a real app
@@ -165,45 +241,50 @@ export const useFilterStore = create<FilterState>()(
       },
       
       hasActiveFilters: () => {
-        const state = get()
+        const currentFilters = get().getCurrentPlatformFilters()
         return (
-          state.selectedBrands.length > 0 ||
-          state.selectedCategories.length > 0 ||
-          state.selectedSkus.length > 0 ||
-          state.selectedCities.length > 0 ||
-          state.selectedDarkStores.length > 0 ||
-          state.selectedKeywords.length > 0 ||
-          state.selectedPlatforms.length < platforms.length
+          currentFilters.selectedBrands.length > 0 ||
+          currentFilters.selectedCategories.length > 0 ||
+          currentFilters.selectedSkus.length > 0 ||
+          currentFilters.selectedCities.length > 0 ||
+          currentFilters.selectedDarkStores.length > 0 ||
+          currentFilters.selectedKeywords.length > 0 ||
+          currentFilters.dateRangePreset !== 'last-30-days'
         )
       },
       
       getActiveFilterCount: () => {
-        const state = get()
+        const currentFilters = get().getCurrentPlatformFilters()
         let count = 0
         
-        if (state.selectedBrands.length > 0) count++
-        if (state.selectedCategories.length > 0) count++
-        if (state.selectedSkus.length > 0) count++
-        if (state.selectedCities.length > 0) count++
-        if (state.selectedDarkStores.length > 0) count++
-        if (state.selectedKeywords.length > 0) count++
-        if (state.selectedPlatforms.length < platforms.length) count++
+        if (currentFilters.selectedBrands.length > 0) count++
+        if (currentFilters.selectedCategories.length > 0) count++
+        if (currentFilters.selectedSkus.length > 0) count++
+        if (currentFilters.selectedCities.length > 0) count++
+        if (currentFilters.selectedDarkStores.length > 0) count++
+        if (currentFilters.selectedKeywords.length > 0) count++
+        if (currentFilters.dateRangePreset !== 'last-30-days') count++
         
         return count
       },
-    }),
+      
+      // Derived getters for current platform
+      getSelectedBrands: () => get().getCurrentPlatformFilters().selectedBrands,
+      getSelectedCategories: () => get().getCurrentPlatformFilters().selectedCategories,
+      getSelectedSkus: () => get().getCurrentPlatformFilters().selectedSkus,
+      getSelectedCities: () => get().getCurrentPlatformFilters().selectedCities,
+      getSelectedDarkStores: () => get().getCurrentPlatformFilters().selectedDarkStores,
+      getSelectedKeywords: () => get().getCurrentPlatformFilters().selectedKeywords,
+      getDateRange: () => get().getCurrentPlatformFilters().dateRange,
+      getDateRangePreset: () => get().getCurrentPlatformFilters().dateRangePreset,
+      getLastUpdated: () => get().getCurrentPlatformFilters().lastUpdated,
+      }
+    },
     {
       name: 'kelpie-filters',
       partialize: (state) => ({
-        selectedPlatforms: state.selectedPlatforms,
-        selectedBrands: state.selectedBrands,
-        selectedCategories: state.selectedCategories,
-        selectedSkus: state.selectedSkus,
-        selectedCities: state.selectedCities,
-        selectedDarkStores: state.selectedDarkStores,
-        selectedKeywords: state.selectedKeywords,
-        dateRange: state.dateRange,
-        dateRangePreset: state.dateRangePreset,
+        currentPlatform: state.currentPlatform,
+        platformFilters: state.platformFilters,
         activeTab: state.activeTab,
       })
     }
@@ -211,17 +292,18 @@ export const useFilterStore = create<FilterState>()(
 )
 
 // Optimized selectors using shallow equality
-export const useFilterPlatforms = () => useFilterStore(state => state.selectedPlatforms)
-export const useFilterBrands = () => useFilterStore(state => state.selectedBrands)
-export const useFilterCategories = () => useFilterStore(state => state.selectedCategories)
-export const useFilterSkus = () => useFilterStore(state => state.selectedSkus)
-export const useFilterCities = () => useFilterStore(state => state.selectedCities)
-export const useFilterDarkStores = () => useFilterStore(state => state.selectedDarkStores)
-export const useFilterKeywords = () => useFilterStore(state => state.selectedKeywords)
-export const useFilterDateRange = () => useFilterStore(state => state.dateRange)
+export const useCurrentPlatform = () => useFilterStore(state => state.currentPlatform)
+export const useFilterBrands = () => useFilterStore(state => state.getSelectedBrands())
+export const useFilterCategories = () => useFilterStore(state => state.getSelectedCategories())
+export const useFilterSkus = () => useFilterStore(state => state.getSelectedSkus())
+export const useFilterCities = () => useFilterStore(state => state.getSelectedCities())
+export const useFilterDarkStores = () => useFilterStore(state => state.getSelectedDarkStores())
+export const useFilterKeywords = () => useFilterStore(state => state.getSelectedKeywords())
+export const useFilterDateRange = () => useFilterStore(state => state.getDateRange())
+export const useFilterDateRangePreset = () => useFilterStore(state => state.getDateRangePreset())
 export const useFilterActiveTab = () => useFilterStore(state => state.activeTab)
 export const useFilterLoading = () => useFilterStore(state => state.isLoading)
-export const useFilterLastUpdated = () => useFilterStore(state => state.lastUpdated)
+export const useFilterLastUpdated = () => useFilterStore(state => state.getLastUpdated())
 
 // Computed selectors with memoization
 export const useHasActiveFilters = () => useFilterStore(state => state.hasActiveFilters())
@@ -229,7 +311,7 @@ export const useActiveFilterCount = () => useFilterStore(state => state.getActiv
 
 // Derived selectors for computed values with memoization
 export const useFilteredData = () => {
-  const selectedPlatforms = useFilterPlatforms()
+  const currentPlatform = useCurrentPlatform()
   const selectedBrands = useFilterBrands()
   const selectedCategories = useFilterCategories()
   const selectedSkus = useFilterSkus()
@@ -237,9 +319,9 @@ export const useFilteredData = () => {
   const selectedDarkStores = useFilterDarkStores()
   
   return useMemo(() => {
-    // Helper to check if a platform is selected
+    // Helper to check if current platform matches
     const isPlatformSelected = (platformId: string) =>
-      selectedPlatforms.includes(platformId)
+      platformId === currentPlatform
     
     // Helper to check if a brand is selected
     const isBrandSelected = (brandId: string) =>
@@ -295,19 +377,15 @@ export const useFilteredData = () => {
       )
     }
     
-    // Get filtered dark stores based on city and platform selection
+    // Get filtered dark stores based on city and current platform selection
     const getFilteredDarkStores = () => {
-      let filteredStores = darkStores.filter(store => store.isActive)
+      let filteredStores = darkStores.filter(store => 
+        store.isActive && store.platformId === currentPlatform
+      )
       
       if (selectedCities.length > 0) {
         filteredStores = filteredStores.filter(store =>
           selectedCities.includes(store.cityId)
-        )
-      }
-      
-      if (selectedPlatforms.length > 0 && selectedPlatforms.length < platforms.length) {
-        filteredStores = filteredStores.filter(store =>
-          selectedPlatforms.includes(store.platformId)
         )
       }
       
@@ -325,7 +403,7 @@ export const useFilteredData = () => {
       getFilteredCities,
       getFilteredDarkStores,
     }
-  }, [selectedPlatforms, selectedBrands, selectedCategories, selectedSkus, selectedCities, selectedDarkStores])
+  }, [currentPlatform, selectedBrands, selectedCategories, selectedSkus, selectedCities, selectedDarkStores])
 }
 
 // Hook for URL synchronization (to be implemented)

@@ -1,45 +1,55 @@
 import { useEffect } from 'react'
 import { useRouter } from '@tanstack/react-router'
-import { useFilterStore } from '@/stores/filterStore'
+import { 
+  useFilterBrands, 
+  useFilterCategories, 
+  useFilterSkus, 
+  useFilterCities, 
+  useFilterKeywords, 
+  useFilterDateRangePreset,
+  useCurrentPlatform,
+  useFilterStore 
+} from '@/stores/filterStore'
 
 export function useFilterUrlSync() {
   const router = useRouter()
+  const currentPlatform = useCurrentPlatform()
+  const selectedBrands = useFilterBrands()
+  const selectedCategories = useFilterCategories()
+  const selectedSkus = useFilterSkus()
+  const selectedCities = useFilterCities()
+  const selectedKeywords = useFilterKeywords()
+  const dateRangePreset = useFilterDateRangePreset()
+  
   const {
-    selectedPlatforms,
-    selectedCategories,
-    selectedSkus,
-    selectedCities,
-    selectedKeywords,
-    dateRangePreset,
-    setSelectedPlatforms,
     setSelectedCategories,
     setSelectedSkus,
     setSelectedCities,
     setSelectedKeywords,
     setDateRangePreset,
+    setCurrentPlatform,
   } = useFilterStore()
 
   // Sync filters to URL on change
   useEffect(() => {
     const params = new URLSearchParams()
     
-    if (selectedPlatforms.length > 0 && selectedPlatforms.length < 3) {
-      params.set('platforms', selectedPlatforms.join(','))
-    }
+    // Include current platform
+    params.set('platform', currentPlatform)
     
-    if (selectedCategories.length > 0) {
+    if (selectedCategories && selectedCategories.length > 0) {
       params.set('categories', selectedCategories.join(','))
     }
     
-    if (selectedSkus.length > 0) {
+    if (selectedSkus && selectedSkus.length > 0) {
       params.set('skus', selectedSkus.join(','))
     }
     
-    if (selectedCities.length > 0) {
+    if (selectedCities && selectedCities.length > 0) {
       params.set('cities', selectedCities.join(','))
     }
     
-    if (selectedKeywords.length > 0) {
+    if (selectedKeywords && selectedKeywords.length > 0) {
       params.set('keywords', selectedKeywords.join(','))
     }
     
@@ -54,7 +64,7 @@ export function useFilterUrlSync() {
       window.history.replaceState({}, '', newUrl)
     }
   }, [
-    selectedPlatforms,
+    currentPlatform,
     selectedCategories,
     selectedSkus,
     selectedCities,
@@ -66,9 +76,9 @@ export function useFilterUrlSync() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     
-    const platformsParam = params.get('platforms')
-    if (platformsParam) {
-      setSelectedPlatforms(platformsParam.split(','))
+    const platformParam = params.get('platform')
+    if (platformParam) {
+      setCurrentPlatform(platformParam)
     }
     
     const categoriesParam = params.get('categories')

@@ -5,7 +5,7 @@ import {
   CompetitivenessIcon, 
   RevenueImpactIcon 
 } from '@/components/icons/kpi-icons'
-import { useFilterStore, useFilteredData } from '@/stores/filterStore'
+import { useFilteredData, useCurrentPlatform, useFilterBrands, useFilterCategories, useFilterSkus, useFilterCities, useFilterDateRange } from '@/stores/filterStore'
 import { useMemo } from 'react'
 
 // Mock data for pricing KPIs
@@ -86,13 +86,12 @@ export function RevenueImpactCard() {
 
 // Helper function to calculate filtered KPI data
 function useFilteredPricingKpis() {
-  const {
-    selectedPlatforms,
-    selectedCategories,
-    selectedSkus,
-    selectedCities,
-    dateRange
-  } = useFilterStore()
+  const currentPlatform = useCurrentPlatform()
+  const selectedBrands = useFilterBrands()
+  const selectedCategories = useFilterCategories()
+  const selectedSkus = useFilterSkus()
+  const selectedCities = useFilterCities()
+  const dateRange = useFilterDateRange()
   
   const { isPlatformSelected, isCategorySelected, isSkuSelected, isCitySelected } = useFilteredData()
   
@@ -103,28 +102,26 @@ function useFilteredPricingKpis() {
     let priceCompetitiveness = 89.4
     let revenueImpact = 12.6
     
-    // Adjust based on platform filters
-    if (selectedPlatforms.length < 3) {
-      if (selectedPlatforms.includes('blinkit')) {
-        averagePriceIndex = 104.1
-        priceCompetitiveness = 87.2
-        priceChangeFrequency = 42
-      } else if (selectedPlatforms.includes('swiggy-instamart')) {
-        averagePriceIndex = 101.8
-        priceCompetitiveness = 89.8
-        priceChangeFrequency = 38
-      } else if (selectedPlatforms.includes('zepto')) {
-        averagePriceIndex = 100.9
-        priceCompetitiveness = 91.1
-        priceChangeFrequency = 47
-      }
-      
-      // Adjust revenue impact based on platform reach
-      revenueImpact = revenueImpact * (selectedPlatforms.length / 3)
+    // Adjust based on current platform
+    if (currentPlatform === 'blinkit') {
+      averagePriceIndex = 104.1
+      priceCompetitiveness = 87.2
+      priceChangeFrequency = 42
+      revenueImpact = 3.2
+    } else if (currentPlatform === 'swiggy-instamart') {
+      averagePriceIndex = 101.8
+      priceCompetitiveness = 89.8
+      priceChangeFrequency = 38
+      revenueImpact = 2.8
+    } else if (currentPlatform === 'zepto') {
+      averagePriceIndex = 100.9
+      priceCompetitiveness = 91.1
+      priceChangeFrequency = 47
+      revenueImpact = 2.4
     }
     
     // Adjust based on category/SKU filters
-    if (selectedCategories.length > 0 || selectedSkus.length > 0) {
+    if ((selectedCategories && selectedCategories.length > 0) || (selectedSkus && selectedSkus.length > 0)) {
       // When filtering by specific categories/SKUs, competitiveness typically varies
       if (selectedCategories.includes('atta')) {
         averagePriceIndex = 100.2 // Atta is competitively priced
@@ -172,7 +169,7 @@ function useFilteredPricingKpis() {
         value: Number(revenueImpact.toFixed(1))
       }
     }
-  }, [selectedPlatforms, selectedCategories, selectedSkus, selectedCities, dateRange, isPlatformSelected, isCategorySelected, isSkuSelected, isCitySelected])
+  }, [currentPlatform, selectedCategories, selectedSkus, selectedCities, dateRange, isPlatformSelected, isCategorySelected, isSkuSelected, isCitySelected])
 }
 
 // Individual KPI Card Components with filtering

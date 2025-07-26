@@ -60,13 +60,7 @@ export function StorePerformanceTable({
   const [currentPage, setCurrentPage] = useState(1)
   const [isExporting, setIsExporting] = useState(false)
 
-  // Get global filter state
-  const {
-    selectedPlatforms,
-    selectedCategories,
-    selectedSkus,
-    selectedCities,
-  } = useFilterStore()
+  // Use platform-specific filter data
   
   const { 
     isPlatformSelected,
@@ -87,22 +81,18 @@ export function StorePerformanceTable({
                            store.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            store.platform.toLowerCase().includes(searchTerm.toLowerCase())
       
-      // Apply global platform filters if any are selected
-      const matchesGlobalPlatform = selectedPlatforms.length === 0 || 
-        isPlatformSelected(store.platform.toLowerCase().replace(' ', '-'))
-      
-      // Apply global city filters if any are selected
-      const matchesGlobalCity = selectedCities.length === 0 || 
-        isCitySelected(store.city.toLowerCase().replace(' ', ''))
+      // Apply global platform and city filters
+      const matchesGlobalPlatform = isPlatformSelected(store.platform.toLowerCase().replace(' ', '-'))
+      const matchesGlobalCity = isCitySelected(store.city.toLowerCase().replace(' ', ''))
       
       // Apply local table filters (these work on top of global filters)
       const matchesLocalCity = localSelectedCity === 'all' || store.city === localSelectedCity
       const matchesLocalPlatform = localSelectedPlatform === 'all' || store.platform === localSelectedPlatform
       
-      // Filter by SKUs if specific ones are selected globally
+      // Filter by SKUs based on global selection
       let matchesSkus = true
-      if (selectedCategories.length > 0 || selectedSkus.length > 0) {
-        const allowedSkus = getFilteredSkus()
+      const allowedSkus = getFilteredSkus()
+      if (allowedSkus.length > 0) {
         const allowedSkuNames = allowedSkus.map(sku => sku.name)
         // Check if any of the store's top SKUs match the filtered SKUs
         matchesSkus = store.topSkus.some(sku => allowedSkuNames.includes(sku))
@@ -145,7 +135,6 @@ export function StorePerformanceTable({
 
     return { filteredData: paginatedData, totalPages, totalCount: filtered.length }
   }, [storeData, searchTerm, localSelectedCity, localSelectedPlatform, availabilityFilter, sortField, sortDirection, currentPage, itemsPerPage,
-      selectedPlatforms, selectedCities, selectedCategories, selectedSkus, 
       isPlatformSelected, isCitySelected, getFilteredSkus])
 
   // Handle sorting
@@ -181,16 +170,14 @@ export function StorePerformanceTable({
                            store.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            store.platform.toLowerCase().includes(searchTerm.toLowerCase())
       
-      const matchesGlobalPlatform = selectedPlatforms.length === 0 || 
-        isPlatformSelected(store.platform.toLowerCase().replace(' ', '-'))
-      const matchesGlobalCity = selectedCities.length === 0 || 
-        isCitySelected(store.city.toLowerCase().replace(' ', ''))
+      const matchesGlobalPlatform = isPlatformSelected(store.platform.toLowerCase().replace(' ', '-'))
+      const matchesGlobalCity = isCitySelected(store.city.toLowerCase().replace(' ', ''))
       const matchesLocalCity = localSelectedCity === 'all' || store.city === localSelectedCity
       const matchesLocalPlatform = localSelectedPlatform === 'all' || store.platform === localSelectedPlatform
       
       let matchesSkus = true
-      if (selectedCategories.length > 0 || selectedSkus.length > 0) {
-        const allowedSkus = getFilteredSkus()
+      const allowedSkus = getFilteredSkus()
+      if (allowedSkus.length > 0) {
         const allowedSkuNames = allowedSkus.map(sku => sku.name)
         matchesSkus = store.topSkus.some(sku => allowedSkuNames.includes(sku))
       }
@@ -217,7 +204,6 @@ export function StorePerformanceTable({
       excellentStores
     }
   }, [storeData, searchTerm, localSelectedCity, localSelectedPlatform, availabilityFilter,
-      selectedPlatforms, selectedCities, selectedCategories, selectedSkus, 
       isPlatformSelected, isCitySelected, getFilteredSkus])
 
   // Reset filters
@@ -242,16 +228,14 @@ export function StorePerformanceTable({
                              store.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
                              store.platform.toLowerCase().includes(searchTerm.toLowerCase())
         
-        const matchesGlobalPlatform = selectedPlatforms.length === 0 || 
-          isPlatformSelected(store.platform.toLowerCase().replace(' ', '-'))
-        const matchesGlobalCity = selectedCities.length === 0 || 
-          isCitySelected(store.city.toLowerCase().replace(' ', ''))
+        const matchesGlobalPlatform = isPlatformSelected(store.platform.toLowerCase().replace(' ', '-'))
+        const matchesGlobalCity = isCitySelected(store.city.toLowerCase().replace(' ', ''))
         const matchesLocalCity = localSelectedCity === 'all' || store.city === localSelectedCity
         const matchesLocalPlatform = localSelectedPlatform === 'all' || store.platform === localSelectedPlatform
         
         let matchesSkus = true
-        if (selectedCategories.length > 0 || selectedSkus.length > 0) {
-          const allowedSkus = getFilteredSkus()
+        const allowedSkus = getFilteredSkus()
+        if (allowedSkus.length > 0) {
           const allowedSkuNames = allowedSkus.map(sku => sku.name)
           matchesSkus = store.topSkus.some(sku => allowedSkuNames.includes(sku))
         }

@@ -1,5 +1,5 @@
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
-import { useFilterStore, useFilteredData } from '@/stores/filterStore'
+import { useFilteredData, useCurrentPlatform, useFilterBrands, useFilterCategories, useFilterSkus, useFilterCities, useFilterActiveTab } from '@/stores/filterStore'
 import { useMemo } from 'react'
 
 // Base data for availability trends
@@ -19,13 +19,12 @@ const baseAvailabilityData = [
 ]
 
 export function Overview() {
-  const {
-    selectedPlatforms,
-    selectedCategories,
-    selectedSkus,
-    selectedCities,
-    activeTab
-  } = useFilterStore()
+  const currentPlatform = useCurrentPlatform()
+  const selectedBrands = useFilterBrands()
+  const selectedCategories = useFilterCategories()
+  const selectedSkus = useFilterSkus()
+  const selectedCities = useFilterCities()
+  const activeTab = useFilterActiveTab()
   
   const { isPlatformSelected, isCategorySelected, isSkuSelected, isCitySelected } = useFilteredData()
   
@@ -34,18 +33,22 @@ export function Overview() {
     return baseAvailabilityData.map(item => {
       let multiplier = 1
       
-      // Adjust based on platform filters
-      if (selectedPlatforms.length > 0 && selectedPlatforms.length < 3) {
-        multiplier *= (selectedPlatforms.length / 3) * 1.1 // Focusing on fewer platforms can improve metrics
+      // Adjust based on current platform
+      if (currentPlatform === 'blinkit') {
+        multiplier *= 1.05 // Blinkit typically performs slightly better
+      } else if (currentPlatform === 'swiggy-instamart') {
+        multiplier *= 0.98 // Swiggy shows slightly lower numbers
+      } else if (currentPlatform === 'zepto') {
+        multiplier *= 0.95 // Zepto is more competitive
       }
       
       // Adjust based on category/SKU filters
-      if (selectedCategories.length > 0 || selectedSkus.length > 0) {
+      if ((selectedCategories && selectedCategories.length > 0) || (selectedSkus && selectedSkus.length > 0)) {
         multiplier *= 1.15 // Specific category/SKU focus typically shows better numbers
       }
       
       // Adjust based on city filters
-      if (selectedCities.length > 0 && selectedCities.length < 5) {
+      if (selectedCities && selectedCities.length > 0 && selectedCities.length < 5) {
         multiplier *= (selectedCities.length / 5) * 1.05
       }
       
@@ -62,7 +65,7 @@ export function Overview() {
         total: Math.round(baseValue * multiplier)
       }
     })
-  }, [selectedPlatforms, selectedCategories, selectedSkus, selectedCities, activeTab])
+  }, [currentPlatform, selectedCategories, selectedSkus, selectedCities, activeTab])
   
   // Get appropriate formatter based on active tab
   const getTickFormatter = () => {

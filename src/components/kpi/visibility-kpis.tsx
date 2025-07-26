@@ -5,7 +5,7 @@ import {
   VisibilityIcon, 
   AdOrganicMixIcon 
 } from '@/components/icons/kpi-icons'
-import { useFilterStore, useFilteredData } from '@/stores/filterStore'
+import { useFilteredData, useCurrentPlatform, useFilterBrands, useFilterCategories, useFilterSkus, useFilterCities, useFilterKeywords, useFilterDateRange } from '@/stores/filterStore'
 import { useMemo } from 'react'
 
 // Mock data for visibility KPIs
@@ -86,14 +86,13 @@ export function AdOrganicMixCard() {
 
 // Helper function to calculate filtered KPI data
 function useFilteredVisibilityKpis() {
-  const {
-    selectedPlatforms,
-    selectedCategories,
-    selectedSkus,
-    selectedCities,
-    selectedKeywords,
-    dateRange
-  } = useFilterStore()
+  const currentPlatform = useCurrentPlatform()
+  const selectedBrands = useFilterBrands()
+  const selectedCategories = useFilterCategories()
+  const selectedSkus = useFilterSkus()
+  const selectedCities = useFilterCities()
+  const selectedKeywords = useFilterKeywords()
+  const dateRange = useFilterDateRange()
   
   const { isPlatformSelected, isCategorySelected, isSkuSelected, isCitySelected } = useFilteredData()
   
@@ -104,41 +103,39 @@ function useFilteredVisibilityKpis() {
     let visibilityConsistency = 91.3
     let adOrganicMix = 65.2
     
-    // Adjust based on platform filters
-    if (selectedPlatforms.length < 3) {
-      if (selectedPlatforms.includes('blinkit')) {
-        shareOfVoice = 26.2
-        averageSearchRanking = 2.1
-        visibilityConsistency = 93.5
-        adOrganicMix = 68.3
-      } else if (selectedPlatforms.includes('swiggy-instamart')) {
-        shareOfVoice = 22.8
-        averageSearchRanking = 2.5
-        visibilityConsistency = 89.7
-        adOrganicMix = 63.1
-      } else if (selectedPlatforms.includes('zepto')) {
-        shareOfVoice = 22.4
-        averageSearchRanking = 2.6
-        visibilityConsistency = 90.8
-        adOrganicMix = 64.2
-      }
+    // Adjust based on current platform
+    if (currentPlatform === 'blinkit') {
+      shareOfVoice = 26.2
+      averageSearchRanking = 2.1
+      visibilityConsistency = 93.5
+      adOrganicMix = 68.3
+    } else if (currentPlatform === 'swiggy-instamart') {
+      shareOfVoice = 22.8
+      averageSearchRanking = 2.5
+      visibilityConsistency = 89.7
+      adOrganicMix = 63.1
+    } else if (currentPlatform === 'zepto') {
+      shareOfVoice = 22.4
+      averageSearchRanking = 2.6
+      visibilityConsistency = 90.8
+      adOrganicMix = 64.2
     }
     
     // Adjust based on category/SKU filters
-    if (selectedCategories.length > 0 || selectedSkus.length > 0) {
-      if (selectedCategories.includes('atta')) {
+    if ((selectedCategories && selectedCategories.length > 0) || (selectedSkus && selectedSkus.length > 0)) {
+      if (selectedCategories && selectedCategories.includes('atta')) {
         shareOfVoice = 28.3 // Strong in atta category
         averageSearchRanking = 1.8
         visibilityConsistency = 94.2
-      } else if (selectedCategories.includes('ready-to-eat')) {
+      } else if (selectedCategories && selectedCategories.includes('ready-to-eat')) {
         shareOfVoice = 16.7 // Weaker in ready-to-eat
         averageSearchRanking = 3.2
         visibilityConsistency = 87.5
-      } else if (selectedCategories.includes('spices')) {
+      } else if (selectedCategories && selectedCategories.includes('spices')) {
         shareOfVoice = 9.2 // Challenging spices category
         averageSearchRanking = 6.8
         visibilityConsistency = 78.3
-      } else if (selectedCategories.includes('salt-sugar')) {
+      } else if (selectedCategories && selectedCategories.includes('salt-sugar')) {
         shareOfVoice = 12.8 // Moderate in salt & sugar
         averageSearchRanking = 4.2
         visibilityConsistency = 85.7
@@ -194,7 +191,7 @@ function useFilteredVisibilityKpis() {
         value: Number(adOrganicMix.toFixed(1))
       }
     }
-  }, [selectedPlatforms, selectedCategories, selectedSkus, selectedCities, selectedKeywords, dateRange, isPlatformSelected, isCategorySelected, isSkuSelected, isCitySelected])
+  }, [currentPlatform, selectedCategories, selectedSkus, selectedCities, selectedKeywords, dateRange, isPlatformSelected, isCategorySelected, isSkuSelected, isCitySelected])
 }
 
 // Individual KPI Card Components with filtering

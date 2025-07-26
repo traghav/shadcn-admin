@@ -15,9 +15,11 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
+import { useFilterStore, useCurrentPlatform } from '@/stores/filterStore'
+import { platforms } from '@/data/mock-kpi-data'
 
 export function PlatformSwitcher({
-  platforms,
+  platforms: sidebarPlatforms,
 }: {
   platforms: {
     name: string
@@ -26,7 +28,23 @@ export function PlatformSwitcher({
   }[]
 }) {
   const { isMobile } = useSidebar()
-  const [activePlatform, setActivePlatform] = React.useState(platforms[0])
+  const currentPlatform = useCurrentPlatform()
+  const { setCurrentPlatform } = useFilterStore()
+  
+  // Find the active platform based on current platform ID
+  const activePlatform = React.useMemo(() => {
+    const platformData = platforms.find(p => p.id === currentPlatform)
+    const sidebarPlatform = sidebarPlatforms.find(sp => sp.name === platformData?.name)
+    return sidebarPlatform || sidebarPlatforms[0]
+  }, [currentPlatform, sidebarPlatforms])
+  
+  const handlePlatformChange = (selectedSidebarPlatform: typeof sidebarPlatforms[0]) => {
+    // Find the corresponding platform ID from mock data
+    const platformData = platforms.find(p => p.name === selectedSidebarPlatform.name)
+    if (platformData) {
+      setCurrentPlatform(platformData.id)
+    }
+  }
 
   return (
     <SidebarMenu>
@@ -58,10 +76,10 @@ export function PlatformSwitcher({
             <DropdownMenuLabel className='text-muted-foreground text-xs'>
               Platforms
             </DropdownMenuLabel>
-            {platforms.map((platform, index) => (
+            {sidebarPlatforms.map((platform, index) => (
               <DropdownMenuItem
                 key={platform.name}
-                onClick={() => setActivePlatform(platform)}
+                onClick={() => handlePlatformChange(platform)}
                 className='gap-2 p-2'
               >
                 <div className='flex size-6 items-center justify-center rounded-sm border'>

@@ -1,167 +1,185 @@
-# Kelpie Dashboard Transformation Plan
+# Kelpie Dashboard - Quick Commerce Analytics
 
-## Overview
-Transform the existing Shadcn Admin template into a Quick Commerce Analytics Dashboard for Kelpie, specifically tailored for Aashirvaad (ITC brand) with realistic mock data.
+## Project Overview
+A React-based analytics dashboard specifically designed for monitoring Aashirvaad (ITC brand) product performance across quick commerce platforms (Blinkit, Swiggy Instamart, Zepto). The dashboard provides real-time insights into availability, pricing, and visibility metrics.
+
+## Current State
+**This is a fully implemented analytics dashboard** built from a Shadcn Admin template that has been transformed into a specialized quick commerce analytics platform.
+
+### ✅ Implemented Features
+- **Three main analytics tabs**: Availability, Pricing, Visibility
+- **Platform switching**: Toggle between Blinkit, Swiggy Instamart, Zepto
+- **KPI monitoring**: Real-time metrics for each analytics category
+- **Data visualization**: Charts, heatmaps, and performance tables
+- **Export functionality**: CSV export for all data views
+- **Global filtering**: Date range, SKU selection, geography filters
+- **Responsive design**: Works across desktop, tablet, and mobile
+- **Authentication**: Clerk-based auth system
+- **Performance optimization**: Error boundaries, lazy loading, memoization
 
 ## Tech Stack
-- React 19 + Vite
-- TanStack Router (file-based routing)
-- Shadcn UI components 
-- Zustand for state management
-- React Hook Form + Zod
-- Recharts for data visualizations
-- Tailwind CSS v4
+- **Frontend**: React 19 + Vite
+- **Routing**: TanStack Router (file-based routing)
+- **UI Components**: Shadcn UI + Radix UI
+- **Styling**: Tailwind CSS v4
+- **State Management**: Zustand
+- **Forms**: React Hook Form + Zod validation
+- **Charts**: Recharts
+- **Authentication**: Clerk
+- **Data Fetching**: TanStack Query
+- **TypeScript**: Full type safety
 
-## Key Transformations
+## Project Structure
 
-### 1. Pages to Remove
-- `/apps` - Apps listing page
-- `/chats` - Chat interface 
-- `/tasks` - Generic task management
-- `/users` - User management
-- `/help-center` - Help center page
-- All auth pages except sign-in (Clerk integration stays)
-- Error pages (keep but update branding)
+### Key Directories
+```
+src/
+├── components/
+│   ├── charts/          # Chart components (heatmaps, trends, tables)
+│   ├── kpi/            # KPI card components for each analytics tab
+│   ├── layout/         # App layout, sidebar, navigation
+│   ├── export/         # CSV export functionality
+│   └── ui/             # Shadcn UI components
+├── features/
+│   ├── availability/   # Availability analytics page
+│   ├── pricing/        # Pricing analytics page
+│   ├── visibility/     # Visibility analytics page
+│   └── settings/       # User settings pages
+├── routes/
+│   ├── _authenticated/ # Protected routes requiring auth
+│   └── (auth)/         # Authentication pages
+├── stores/             # Zustand state stores
+├── data/              # Mock data and data utilities
+└── utils/             # Helper functions and utilities
+```
 
-### 2. New Pages to Create
+### Core Routes
+- `/` - Availability Analytics (main dashboard)
+- `/pricing` - Pricing Analytics
+- `/visibility` - Visibility Analytics
+- `/settings/*` - User account and app settings
 
-#### Main Dashboard Pages
-1. **Availability Tab** (`/`)
-   - KPI Cards: Overall Availability Rate, Out-of-Stock SKUs, Store Coverage, Availability Consistency
-   - Availability Heatmap (SKUs vs Stores/Cities)
-   - Store-Level Availability Table
-   - SKU Performance Matrix
-   - Competitor Comparison
+## Data Model
 
-2. **Pricing Tab** (`/pricing`)
-   - KPI Cards: Average Price Index, Price Change Frequency, Price Competitiveness, Revenue Impact
-   - Price Trend Monitoring
-   - SKU-Level Pricing Table
-   - Competitive Pricing Intelligence
-   - Price Elasticity Dashboard
-
-3. **Visibility Tab** (`/visibility`)
-   - KPI Cards: Share of Voice (SOV), Average Search Ranking, Visibility Consistency, Ad vs Organic Mix
-   - Share of Voice Tracking
-   - Search Ranking Heatmap
-   - Keyword Performance Analysis
-   - Competitor Share Analysis
-
-### 3. Component Modifications
-
-#### Team Switcher → Platform Switcher
-- Transform to switch between Blinkit, Swiggy Instamart, Zepto
-- Add "Data last refreshed" timestamp
-- Use platform logos
-
-#### Sidebar Navigation
-- Update navigation items for Kelpie context
-- Remove unnecessary sections
-- Add Kelpie-specific icons
-
-#### Global Filters Panel
-- Brand Selector (multi-select)
-- SKU Selector (hierarchical)
-- Date Range Picker
-- Geography Filters (cities, dark stores)
-- Keyword Selector (visibility tab only)
-
-### 4. Mock Data Strategy
-
-#### Aashirvaad Products
-- **Atta (Flour)**: Whole Wheat Atta 5kg, 10kg, Multigrain Atta 5kg
+### Aashirvaad Product Categories
+- **Atta (Flour)**: Whole Wheat Atta (5kg, 10kg), Multigrain Atta (5kg)
 - **Ready-to-Eat**: Instant Poha, Instant Upma, Instant Khichdi
 - **Spices**: Turmeric Powder, Chilli Powder, Coriander Powder
 - **Salt & Sugar**: Iodized Salt, Crystal Salt, Sugar
 
-#### Mock Data Structure
-```typescript
-// Platform data
-platforms: ['Blinkit', 'Swiggy Instamart', 'Zepto']
+### Platform Coverage
+- **Blinkit**: Grocery & Essentials
+- **Swiggy Instamart**: Instant Delivery
+- **Zepto**: 10-Minute Delivery
 
-// Cities
-cities: ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai']
+### Geographic Coverage
+Cities: Mumbai, Delhi, Bangalore, Hyderabad, Chennai
+Dark stores: 15-25 per city across platforms
 
-// Dark stores per city
-darkStores: 15-25 per city
+### Competitor Tracking
+- Tata Sampann
+- Fortune
+- Patanjali
+- MDH
 
-// Competitors
-competitors: ['Tata Sampann', 'Fortune', 'Patanjali', 'MDH']
+## Key Components
 
-// Time periods
-- Last 7 days
-- Last 30 days
-- Custom range
+### Analytics Tabs
+1. **Availability Tab** (`src/features/availability/`)
+   - Overall availability rate, out-of-stock SKUs, store coverage
+   - Store-level availability tables
+   - Low stock alerts
+   - Stock level trend charts
+
+2. **Pricing Tab** (`src/features/pricing/`)
+   - Price index monitoring, competitiveness metrics
+   - Price trend analysis
+   - Competitive pricing intelligence
+   - Revenue impact tracking
+
+3. **Visibility Tab** (`src/features/visibility/`)
+   - Share of Voice (SOV), search ranking metrics
+   - Keyword performance analysis
+   - Visibility consistency tracking
+   - Ad vs organic performance mix
+
+### Global Filtering System
+- **Date Range Picker**: Last 7/30 days, custom ranges
+- **SKU Selector**: Hierarchical product selection
+- **Geography Filters**: City and dark store selection
+- **Platform Filter**: Multi-platform comparison
+- **Brand Selector**: Aashirvaad product lines
+
+## Development Commands
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Lint code
+npm run lint
+
+# Format code
+npm run format
+
+# Type checking
+npm run build  # Includes TypeScript compilation
 ```
 
-### 5. Implementation Phases
+## Performance Features
+- **Error Boundaries**: Chart and table error handling
+- **Lazy Loading**: Suspense for chart components
+- **Memoization**: Optimized component re-renders
+- **Async Data Handling**: Simulated loading states
+- **Export Optimization**: Efficient CSV generation
 
-#### Phase 1: Core Structure
-1. Remove unnecessary pages and routes
-2. Update routing structure
-3. Modify sidebar navigation
-4. Transform team switcher to platform switcher
-5. Create base layout for analytics tabs
+## Authentication
+Uses Clerk for authentication with the following routes:
+- `/sign-in` - User login
+- `/sign-up` - User registration
+- Protected routes under `/_authenticated/`
 
-#### Phase 2: Dashboard Components
-1. Create KPI card components
-2. Implement data tables with sorting/filtering
-3. Build chart components (heatmaps, line charts, bar charts)
-4. Add export functionality
+## State Management
+- **Filter Store** (`src/stores/filterStore.ts`): Global filter state
+- **Auth Store** (`src/stores/authStore.ts`): Authentication state
+- React Hook Form for form state management
 
-#### Phase 3: Mock Data & Visualization
-1. Create comprehensive mock data for Aashirvaad
-2. Implement availability heatmaps
-3. Build pricing trend charts
-4. Create visibility tracking visualizations
+## Styling Guidelines
+- Uses Tailwind CSS v4 with custom design tokens
+- Shadcn UI components for consistent design system
+- Responsive design patterns throughout
+- Dark/light mode support via theme context
 
-#### Phase 4: Filters & Interactions
-1. Implement global filter panel
-2. Add date range picker functionality
-3. Create hierarchical SKU selector
-4. Add real-time filter updates
+## Data Export
+All analytics views support CSV export functionality:
+- Availability data exports
+- Pricing analysis exports
+- Visibility metrics exports
+- Configurable date ranges and filters
 
-#### Phase 5: Polish & Optimization
-1. Add loading states
-2. Implement error boundaries
-3. Optimize performance
-4. Add tooltips and help text
+## Error Handling
+- Global error boundaries for chart and table components
+- Graceful fallbacks for missing data
+- Performance monitoring utilities
+- User-friendly error messages
 
-## Subagent Allocation
+## Next Development Areas
+If extending this dashboard, consider:
+1. Real API integration replacing mock data
+2. Advanced filtering capabilities
+3. Additional chart types and visualizations
+4. Push notification system for alerts
+5. Advanced competitor analysis features
+6. Integration with actual quick commerce platform APIs
 
-### Agent 1: Core Structure & Navigation
-- Remove unnecessary pages
-- Update routing
-- Modify sidebar and navigation
-- Transform team switcher
-
-### Agent 2: Dashboard Layout & Components
-- Create tab structure
-- Build KPI card components
-- Implement data tables
-- Add export functionality
-
-### Agent 3: Mock Data Generation
-- Create Aashirvaad product data
-- Generate availability metrics
-- Create pricing data
-- Build visibility/search data
-
-### Agent 4: Data Visualizations
-- Implement heatmaps
-- Build trend charts
-- Create comparison charts
-- Add interactive features
-
-### Agent 5: Filters & State Management
-- Build filter components
-- Implement filter logic
-- Connect filters to data
-- Manage global state
-
-## Next Steps
-1. Start with Agent 1 to clean up the structure
-2. Parallel work on Agents 2 & 3 for components and data
-3. Agent 4 builds visualizations using mock data
-4. Agent 5 implements filtering and state management
-5. Final integration and testing
+## Important Notes
+- All data is currently mocked for demonstration purposes
+- Designed specifically for Aashirvaad product monitoring
+- Optimized for quick commerce platform analytics
+- Built with scalability and performance in mind

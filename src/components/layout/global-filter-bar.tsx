@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useFilterStore } from '@/stores/filterStore'
+import { useFilterStore, useFilterDateRange, useFilterDateRangePreset, useFilterCities, useFilterDarkStores, useFilterBrands, useFilterSkus, useFilterKeywords, useCurrentPlatform } from '@/stores/filterStore'
 import { 
   platforms, 
   brands,
@@ -34,16 +34,7 @@ interface GlobalFilterBarProps {
 
 export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
   const {
-    selectedPlatforms,
-    selectedBrands,
-    selectedSkus,
-    selectedCities,
-    selectedDarkStores,
-    selectedKeywords,
-    dateRange,
-    dateRangePreset,
     activeTab,
-    setSelectedPlatforms,
     setSelectedBrands,
     setSelectedSkus,
     setSelectedCities,
@@ -51,10 +42,20 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
     setSelectedKeywords,
     setDateRange,
     setDateRangePreset,
-    resetFilters,
+    resetCurrentPlatformFilters,
     hasActiveFilters,
     getActiveFilterCount,
   } = useFilterStore()
+  
+  // Use the new selectors for platform-specific state
+  const currentPlatform = useCurrentPlatform()
+  const selectedBrands = useFilterBrands()
+  const selectedSkus = useFilterSkus()
+  const selectedCities = useFilterCities()
+  const selectedDarkStores = useFilterDarkStores()
+  const selectedKeywords = useFilterKeywords()
+  const dateRange = useFilterDateRange()
+  const dateRangePreset = useFilterDateRangePreset()
 
   // Get filtered data based on current selections
   const getFilteredSkus = () => {
@@ -70,17 +71,14 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
   }
 
   const getFilteredDarkStores = () => {
-    let filteredStores = darkStores.filter(store => store.isActive)
+    // Filter stores by current platform and active status
+    let filteredStores = darkStores.filter(store => 
+      store.isActive && store.platformId === currentPlatform
+    )
     
     if (selectedCities.length > 0) {
       filteredStores = filteredStores.filter(store =>
         selectedCities.includes(store.cityId)
-      )
-    }
-    
-    if (selectedPlatforms.length > 0 && selectedPlatforms.length < platforms.length) {
-      filteredStores = filteredStores.filter(store =>
-        selectedPlatforms.includes(store.platformId)
       )
     }
     
@@ -407,7 +405,7 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={resetFilters}
+                    onClick={resetCurrentPlatformFilters}
                     className="h-9 px-3 text-xs border-red-300 text-red-700 hover:bg-red-50"
                   >
                     Clear All

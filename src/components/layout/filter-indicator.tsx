@@ -2,7 +2,7 @@ import React from 'react'
 import { X } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { useFilterStore } from '@/stores/filterStore'
+import { useFilterStore, useFilterBrands, useFilterCategories, useFilterSkus, useFilterCities, useFilterDarkStores, useFilterKeywords, useFilterDateRangePreset, useCurrentPlatform } from '@/stores/filterStore'
 import { 
   platforms, 
   brands,
@@ -18,16 +18,7 @@ interface FilterIndicatorProps {
 
 export function FilterIndicator({ className }: FilterIndicatorProps) {
   const {
-    selectedPlatforms,
-    selectedBrands,
-    selectedCategories,
-    selectedSkus,
-    selectedCities,
-    selectedDarkStores,
-    selectedKeywords,
-    dateRangePreset,
     activeTab,
-    setSelectedPlatforms,
     setSelectedBrands,
     setSelectedCategories,
     setSelectedSkus,
@@ -35,8 +26,18 @@ export function FilterIndicator({ className }: FilterIndicatorProps) {
     setSelectedDarkStores,
     setSelectedKeywords,
     hasActiveFilters,
-    resetFilters,
+    resetCurrentPlatformFilters,
   } = useFilterStore()
+  
+  // Use platform-specific selectors
+  const currentPlatform = useCurrentPlatform()
+  const selectedBrands = useFilterBrands()
+  const selectedCategories = useFilterCategories()
+  const selectedSkus = useFilterSkus()
+  const selectedCities = useFilterCities()
+  const selectedDarkStores = useFilterDarkStores()
+  const selectedKeywords = useFilterKeywords()
+  const dateRangePreset = useFilterDateRangePreset()
 
   if (!hasActiveFilters()) {
     return null
@@ -45,16 +46,13 @@ export function FilterIndicator({ className }: FilterIndicatorProps) {
   const getFilterBadges = () => {
     const badges = []
 
-    // Platform filters
-    if (selectedPlatforms.length > 0 && selectedPlatforms.length < platforms.length) {
-      const platformNames = selectedPlatforms.map(id => 
-        platforms.find(p => p.id === id)?.name
-      ).filter(Boolean)
-      
+    // Current platform indicator (not removable)
+    const currentPlatformName = platforms.find(p => p.id === currentPlatform)?.name
+    if (currentPlatformName) {
       badges.push({
-        key: 'platforms',
-        label: `Platforms: ${platformNames.join(', ')}`,
-        onRemove: () => setSelectedPlatforms(platforms.map(p => p.id))
+        key: 'platform',
+        label: `Platform: ${currentPlatformName}`,
+        onRemove: undefined // Cannot remove platform filter
       })
     }
 
@@ -182,7 +180,7 @@ export function FilterIndicator({ className }: FilterIndicatorProps) {
       <Button
         variant="ghost"
         size="sm"
-        onClick={resetFilters}
+        onClick={resetCurrentPlatformFilters}
         className="text-xs h-6 px-2"
       >
         Clear all
@@ -193,7 +191,7 @@ export function FilterIndicator({ className }: FilterIndicatorProps) {
 
 // Compact version for mobile or small spaces
 export function FilterIndicatorCompact({ className }: FilterIndicatorProps) {
-  const { hasActiveFilters, getActiveFilterCount, resetFilters } = useFilterStore()
+  const { hasActiveFilters, getActiveFilterCount, resetCurrentPlatformFilters } = useFilterStore()
 
   if (!hasActiveFilters()) {
     return null
@@ -207,7 +205,7 @@ export function FilterIndicatorCompact({ className }: FilterIndicatorProps) {
           variant="ghost"
           size="sm"
           className="h-auto p-0 hover:bg-transparent"
-          onClick={resetFilters}
+          onClick={resetCurrentPlatformFilters}
         >
           <X className="h-3 w-3" />
         </Button>

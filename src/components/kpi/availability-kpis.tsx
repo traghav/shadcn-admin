@@ -5,7 +5,7 @@ import {
   StoreCoverageIcon, 
   ConsistencyIcon 
 } from '@/components/icons/kpi-icons'
-import { useFilterStore, useFilteredData } from '@/stores/filterStore'
+import { useFilteredData, useCurrentPlatform, useFilterBrands, useFilterCategories, useFilterSkus, useFilterCities, useFilterDateRange } from '@/stores/filterStore'
 import { useMemo } from 'react'
 
 // Mock data for availability KPIs
@@ -86,13 +86,12 @@ export function AvailabilityConsistencyCard() {
 
 // Helper function to calculate filtered KPI data
 function useFilteredAvailabilityKpis() {
-  const {
-    selectedPlatforms,
-    selectedCategories,
-    selectedSkus,
-    selectedCities,
-    dateRange
-  } = useFilterStore()
+  const currentPlatform = useCurrentPlatform()
+  const selectedBrands = useFilterBrands()
+  const selectedCategories = useFilterCategories()
+  const selectedSkus = useFilterSkus()
+  const selectedCities = useFilterCities()
+  const dateRange = useFilterDateRange()
   
   const { isPlatformSelected, isCategorySelected, isSkuSelected, isCitySelected } = useFilteredData()
   
@@ -105,28 +104,26 @@ function useFilteredAvailabilityKpis() {
     let storeCoverage = 847
     let availabilityConsistency = 87.5
     
-    // Adjust based on platform filters
-    if (selectedPlatforms.length < 3) {
-      const platformMultiplier = selectedPlatforms.length / 3
-      storeCoverage = Math.round(storeCoverage * platformMultiplier)
-      
-      if (selectedPlatforms.includes('blinkit')) {
-        overallAvailability = 96.1
-        outOfStockSkus = 8
-        availabilityConsistency = 89.2
-      } else if (selectedPlatforms.includes('swiggy-instamart')) {
-        overallAvailability = 93.8
-        outOfStockSkus = 12
-        availabilityConsistency = 85.7
-      } else if (selectedPlatforms.includes('zepto')) {
-        overallAvailability = 92.7
-        outOfStockSkus = 3
-        availabilityConsistency = 87.9
-      }
+    // Adjust based on current platform
+    if (currentPlatform === 'blinkit') {
+      overallAvailability = 96.1
+      outOfStockSkus = 8
+      storeCoverage = 295
+      availabilityConsistency = 89.2
+    } else if (currentPlatform === 'swiggy-instamart') {
+      overallAvailability = 93.8
+      outOfStockSkus = 12
+      storeCoverage = 276
+      availabilityConsistency = 85.7
+    } else if (currentPlatform === 'zepto') {
+      overallAvailability = 92.7
+      outOfStockSkus = 3
+      storeCoverage = 276
+      availabilityConsistency = 87.9
     }
     
     // Adjust based on category/SKU filters
-    if (selectedCategories.length > 0 || selectedSkus.length > 0) {
+    if ((selectedCategories && selectedCategories.length > 0) || (selectedSkus && selectedSkus.length > 0)) {
       // When filtering by specific categories/SKUs, availability typically improves
       overallAvailability = Math.min(overallAvailability + 2.1, 99.5)
       outOfStockSkus = Math.max(Math.round(outOfStockSkus * 0.7), 1)
@@ -164,7 +161,7 @@ function useFilteredAvailabilityKpis() {
         value: Number(availabilityConsistency.toFixed(1))
       }
     }
-  }, [selectedPlatforms, selectedCategories, selectedSkus, selectedCities, dateRange, isPlatformSelected, isCategorySelected, isSkuSelected, isCitySelected])
+  }, [currentPlatform, selectedCategories, selectedSkus, selectedCities, dateRange, isPlatformSelected, isCategorySelected, isSkuSelected, isCitySelected])
 }
 
 // Individual KPI Card Components with filtering
