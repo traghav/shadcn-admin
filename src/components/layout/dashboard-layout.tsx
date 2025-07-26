@@ -49,6 +49,9 @@ export function DashboardLayout({
     <ErrorBoundary>
       {/* ===== Top Heading ===== */}
       <Header>
+        <div className="flex items-center">
+          <h1 className="text-lg font-semibold">Kelpie 🐕</h1>
+        </div>
         <div className='ml-auto flex items-center space-x-2 sm:space-x-4'>
           <div className="hidden sm:block">
             <Search />
