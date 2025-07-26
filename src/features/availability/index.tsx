@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { AvailabilityOverview } from './components/availability-overview'
 import { Overview } from '@/features/dashboard/components/overview'
@@ -102,58 +103,84 @@ const AvailabilityAnalyticsComponent = memo(() => {
         </SmoothTransition>
       }
     >
-      <div className="space-y-4 sm:space-y-6" data-export-capture>
-        <FadeIn>
-          <AvailabilityOverview />
-        </FadeIn>
+      <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
+        <TabsList className="mb-6">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="alerts-insights">Alerts and Insights</TabsTrigger>
+        </TabsList>
         
-        <StaggeredFadeIn staggerDelay={150} initialDelay={200}>
-          <div className='grid grid-cols-1 gap-4 lg:gap-6 lg:grid-cols-7'>
-            <Card className='col-span-1 lg:col-span-4'>
-              <CardHeader>
-                <CardTitle>Stock Levels Overview</CardTitle>
-                <CardDescription>
-                  Monitor inventory levels across all product categories
-                </CardDescription>
-              </CardHeader>
-              <CardContent className='pl-2'>
-                <StockLevelsChart />
-              </CardContent>
-            </Card>
+        <TabsContent value="overview" className="space-y-4 sm:space-y-6" data-export-capture>
+          <FadeIn>
+            <AvailabilityOverview />
+          </FadeIn>
+          
+          <StaggeredFadeIn staggerDelay={150} initialDelay={200}>
+            <div className='grid grid-cols-1 gap-4 lg:gap-6 lg:grid-cols-7'>
+              <Card className='col-span-1 lg:col-span-4'>
+                <CardHeader>
+                  <CardTitle>Stock Levels Overview</CardTitle>
+                  <CardDescription>
+                    Monitor inventory levels across all product categories
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className='pl-2'>
+                  <StockLevelsChart />
+                </CardContent>
+              </Card>
+              
+              <Card className='col-span-1 lg:col-span-3'>
+                <CardHeader>
+                  <CardTitle>Recent Stock Changes</CardTitle>
+                  <CardDescription>
+                    Latest inventory updates and movements
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <RecentStockChanges />
+                </CardContent>
+              </Card>
+            </div>
             
-            <Card className='col-span-1 lg:col-span-3'>
+            <Card>
               <CardHeader>
-                <CardTitle>Recent Stock Changes</CardTitle>
+                <CardTitle>Low Stock Alerts</CardTitle>
                 <CardDescription>
-                  Latest inventory updates and movements
+                  Products that need immediate restocking attention
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <RecentStockChanges />
+                <div className="space-y-1">
+                  {lowStockAlerts.map((alert, index) => (
+                    <LowStockAlert
+                      key={`${alert.product}-${index}`}
+                      {...alert}
+                    />
+                  ))}
+                </div>
               </CardContent>
             </Card>
-          </div>
-          
+          </StaggeredFadeIn>
+        </TabsContent>
+        
+        <TabsContent value="alerts-insights" className="space-y-4 sm:space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Low Stock Alerts</CardTitle>
+              <CardTitle>Alerts and Insights</CardTitle>
               <CardDescription>
-                Products that need immediate restocking attention
+                Advanced analytics and intelligent alerts for availability monitoring
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-1">
-                {lowStockAlerts.map((alert, index) => (
-                  <LowStockAlert
-                    key={`${alert.product}-${index}`}
-                    {...alert}
-                  />
-                ))}
+              <div className="flex items-center justify-center h-[400px] text-muted-foreground">
+                <div className="text-center">
+                  <p className="text-lg mb-2">Coming Soon</p>
+                  <p className="text-sm">Advanced alerts and insights will be available here</p>
+                </div>
               </div>
             </CardContent>
           </Card>
-        </StaggeredFadeIn>
-      </div>
+        </TabsContent>
+      </Tabs>
     </DashboardLayout>
   )
 })
