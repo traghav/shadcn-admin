@@ -10,6 +10,8 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/authStore'
 import { handleServerError } from '@/utils/handle-server-error'
+import { setupGlobalErrorHandling, configureErrorReporting } from '@/utils/error-handling.tsx'
+import { startPerformanceMonitoring } from '@/utils/performance-monitor.tsx'
 import { FontProvider } from './context/font-context'
 import { ThemeProvider } from './context/theme-context'
 import './index.css'
@@ -80,6 +82,18 @@ declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router
   }
+}
+
+// Initialize performance monitoring and error handling
+configureErrorReporting({
+  enableReporting: import.meta.env.PROD,
+  environment: import.meta.env.MODE as 'development' | 'staging' | 'production'
+})
+
+setupGlobalErrorHandling()
+
+if (import.meta.env.DEV) {
+  startPerformanceMonitoring()
 }
 
 // Render the app
