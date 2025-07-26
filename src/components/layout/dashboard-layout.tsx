@@ -2,7 +2,6 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
-import { TopNav } from '@/components/layout/top-nav'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
@@ -45,32 +44,11 @@ export function DashboardLayout({
     }
   }, [setActiveTab])
 
-  const topNav = [
-    {
-      title: 'Availability',
-      href: '/',
-      isActive: window.location.pathname === '/',
-      disabled: false,
-    },
-    {
-      title: 'Pricing',
-      href: '/pricing',
-      isActive: window.location.pathname === '/pricing',
-      disabled: false,
-    },
-    {
-      title: 'Visibility',
-      href: '/visibility',
-      isActive: window.location.pathname === '/visibility',
-      disabled: false,
-    },
-  ]
 
   return (
     <ErrorBoundary>
       {/* ===== Top Heading ===== */}
       <Header>
-        <TopNav links={topNav} />
         <div className='ml-auto flex items-center space-x-2 sm:space-x-4'>
           <div className="hidden sm:block">
             <Search />
