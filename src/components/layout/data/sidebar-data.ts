@@ -6,6 +6,7 @@ import {
   IconPackage,
   IconCoin,
   IconEye,
+  IconBrain,
 } from '@tabler/icons-react'
 import { BlinkitIcon, SwiggyInstamartIcon, ZeptoIcon } from '@/components/icons/platform-icons'
 import { type SidebarData } from '../types'
@@ -51,6 +52,11 @@ export const sidebarData: SidebarData = {
           title: 'Visibility',
           url: '/visibility',
           icon: IconEye,
+        },
+        {
+          title: 'Analyse with AI',
+          url: '/ai-analysis',
+          icon: IconBrain,
         },
       ],
     },

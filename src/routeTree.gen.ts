@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedVisibilityRouteImport } from './routes/_authenticated/visibility'
 import { Route as AuthenticatedPricingRouteImport } from './routes/_authenticated/pricing'
+import { Route as AuthenticatedAiAnalysisRouteImport } from './routes/_authenticated/ai-analysis'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
 import { Route as errors500RouteImport } from './routes/(errors)/500'
 import { Route as errors404RouteImport } from './routes/(errors)/404'
@@ -57,6 +58,11 @@ const AuthenticatedVisibilityRoute = AuthenticatedVisibilityRouteImport.update({
 const AuthenticatedPricingRoute = AuthenticatedPricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAiAnalysisRoute = AuthenticatedAiAnalysisRouteImport.update({
+  id: '/ai-analysis',
+  path: '/ai-analysis',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const errors503Route = errors503RouteImport.update({
@@ -178,6 +184,7 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/ai-analysis': typeof AuthenticatedAiAnalysisRoute
   '/pricing': typeof AuthenticatedPricingRoute
   '/visibility': typeof AuthenticatedVisibilityRoute
   '/': typeof AuthenticatedIndexRoute
@@ -201,6 +208,7 @@ export interface FileRoutesByTo {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/ai-analysis': typeof AuthenticatedAiAnalysisRoute
   '/pricing': typeof AuthenticatedPricingRoute
   '/visibility': typeof AuthenticatedVisibilityRoute
   '/': typeof AuthenticatedIndexRoute
@@ -229,6 +237,7 @@ export interface FileRoutesById {
   '/(errors)/404': typeof errors404Route
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
+  '/_authenticated/ai-analysis': typeof AuthenticatedAiAnalysisRoute
   '/_authenticated/pricing': typeof AuthenticatedPricingRoute
   '/_authenticated/visibility': typeof AuthenticatedVisibilityRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
@@ -256,6 +265,7 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/ai-analysis'
     | '/pricing'
     | '/visibility'
     | '/'
@@ -279,6 +289,7 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/ai-analysis'
     | '/pricing'
     | '/visibility'
     | '/'
@@ -306,6 +317,7 @@ export interface FileRouteTypes {
     | '/(errors)/404'
     | '/(errors)/500'
     | '/(errors)/503'
+    | '/_authenticated/ai-analysis'
     | '/_authenticated/pricing'
     | '/_authenticated/visibility'
     | '/_authenticated/'
@@ -368,6 +380,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof AuthenticatedPricingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ai-analysis': {
+      id: '/_authenticated/ai-analysis'
+      path: '/ai-analysis'
+      fullPath: '/ai-analysis'
+      preLoaderRoute: typeof AuthenticatedAiAnalysisRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/(errors)/503': {
@@ -538,6 +557,7 @@ const AuthenticatedSettingsRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
+  AuthenticatedAiAnalysisRoute: typeof AuthenticatedAiAnalysisRoute
   AuthenticatedPricingRoute: typeof AuthenticatedPricingRoute
   AuthenticatedVisibilityRoute: typeof AuthenticatedVisibilityRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
@@ -545,6 +565,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
+  AuthenticatedAiAnalysisRoute: AuthenticatedAiAnalysisRoute,
   AuthenticatedPricingRoute: AuthenticatedPricingRoute,
   AuthenticatedVisibilityRoute: AuthenticatedVisibilityRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
