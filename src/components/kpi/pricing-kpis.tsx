@@ -227,7 +227,7 @@ export const platformPricingData = {
   }
 }
 
-// SKU-specific pricing data for Aashirvaad products
+// SKU-specific pricing data for brand products
 export const skuPricingData = [
   {
     sku: 'Whole Wheat Atta 5kg',

@@ -49,7 +49,7 @@ export const exportToCSV = async (
     const csvLines: string[] = []
     
     // Add header information
-    csvLines.push('Aashirvaad Analytics Report')
+    csvLines.push('Brand Analytics Report')
     csvLines.push(escapeCSVValue(options.title))
     
     if (options.subtitle) {
@@ -98,7 +98,7 @@ export const exportToCSV = async (
     const link = document.createElement('a')
     const url = URL.createObjectURL(blob)
     
-    const filename = `aashirvaad-${options.tab}-data_${getTimestamp()}.csv`
+    const filename = `brand-${options.tab}-data_${getTimestamp()}.csv`
     link.setAttribute('href', url)
     link.setAttribute('download', filename)
     link.style.visibility = 'hidden'

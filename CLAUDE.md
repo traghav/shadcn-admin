@@ -1,7 +1,7 @@
 # Kelpie Dashboard - Quick Commerce Analytics
 
 ## Project Overview
-A React-based analytics dashboard specifically designed for monitoring Aashirvaad (ITC brand) product performance across quick commerce platforms (Blinkit, Swiggy Instamart, Zepto). The dashboard provides real-time insights into availability, pricing, and visibility metrics.
+A React-based analytics dashboard specifically designed for monitoring brand product performance across quick commerce platforms (Blinkit, Swiggy Instamart, Zepto). The dashboard provides real-time insights into availability, pricing, and visibility metrics.
 
 ## Current State
 **This is a fully implemented analytics dashboard** built from a Shadcn Admin template that has been transformed into a specialized quick commerce analytics platform.
@@ -61,7 +61,7 @@ src/
 
 ## Data Model
 
-### Aashirvaad Product Categories
+### Brand Product Categories
 - **Atta (Flour)**: Whole Wheat Atta (5kg, 10kg), Multigrain Atta (5kg)
 - **Ready-to-Eat**: Instant Poha, Instant Upma, Instant Khichdi
 - **Spices**: Turmeric Powder, Chilli Powder, Coriander Powder
@@ -108,7 +108,7 @@ Dark stores: 15-25 per city across platforms
 - **SKU Selector**: Hierarchical product selection
 - **Geography Filters**: City and dark store selection
 - **Platform Filter**: Multi-platform comparison
-- **Brand Selector**: Aashirvaad product lines
+- **Brand Selector**: Brand product lines
 
 ## Development Commands
 
@@ -180,6 +180,6 @@ If extending this dashboard, consider:
 
 ## Important Notes
 - All data is currently mocked for demonstration purposes
-- Designed specifically for Aashirvaad product monitoring
+- Designed specifically for brand product monitoring
 - Optimized for quick commerce platform analytics
 - Built with scalability and performance in mind

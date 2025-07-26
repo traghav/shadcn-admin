@@ -26,7 +26,7 @@ interface PricingComparisonChartProps {
 export function PricingComparisonChart({ 
   data = visualizationData.pricingComparison,
   title = "Competitive Pricing Analysis",
-  description = "Aashirvaad pricing vs competitor averages by SKU and platform",
+  description = "Premium Brand pricing vs competitor averages by SKU and platform",
   height = 400
 }: PricingComparisonChartProps) {
   const [selectedPlatform, setSelectedPlatform] = useState<string>('all')
@@ -43,14 +43,14 @@ export function PricingComparisonChart({
         if (!acc[item.sku]) {
           acc[item.sku] = {
             sku: item.sku,
-            aashirvaaPrice: 0,
+            premiumBrandPrice: 0,
             competitorAvg: 0,
             priceIndex: 0,
             margin: 0,
             count: 0
           }
         }
-        acc[item.sku].aashirvaaPrice += item.aashirvaaPrice
+        acc[item.sku].premiumBrandPrice += item.premiumBrandPrice
         acc[item.sku].competitorAvg += item.competitorAvg
         acc[item.sku].priceIndex += item.priceIndex
         acc[item.sku].margin += item.margin
@@ -58,7 +58,7 @@ export function PricingComparisonChart({
         return acc
       }, {} as Record<string, any>)).map(item => ({
         ...item,
-        aashirvaaPrice: Math.round(item.aashirvaaPrice / item.count),
+        premiumBrandPrice: Math.round(item.premiumBrandPrice / item.count),
         competitorAvg: Math.round(item.competitorAvg / item.count),
         priceIndex: Math.round(item.priceIndex / item.count * 100) / 100,
         margin: Math.round(item.margin / item.count * 100) / 100
@@ -84,7 +84,7 @@ export function PricingComparisonChart({
         <div className="bg-popover text-popover-foreground p-3 border rounded-lg shadow-lg max-w-xs">
           <p className="font-medium text-sm mb-2">{label}</p>
           <p className="text-sm text-primary">
-            Aashirvaad: ₹{data.aashirvaaPrice}
+            Premium Brand: ₹{data.premiumBrandPrice}
           </p>
           <p className="text-sm text-muted-foreground">
             Competitor Avg: ₹{data.competitorAvg}
@@ -109,13 +109,13 @@ export function PricingComparisonChart({
         <div className="bg-popover text-popover-foreground p-3 border rounded-lg shadow-lg max-w-xs">
           <p className="font-medium text-sm mb-2">{data.sku}</p>
           <p className="text-sm text-primary">
-            Aashirvaad: ₹{data.aashirvaaPrice}
+            Premium Brand: ₹{data.premiumBrandPrice}
           </p>
           <p className="text-sm text-muted-foreground">
             Competitor: ₹{data.competitorAvg}
           </p>
           <p className="text-sm text-chart-1">
-            Difference: {data.margin > 0 ? '+' : ''}₹{Math.round(data.aashirvaaPrice - data.competitorAvg)}
+            Difference: {data.margin > 0 ? '+' : ''}₹{Math.round(data.premiumBrandPrice - data.competitorAvg)}
           </p>
         </div>
       )
@@ -231,11 +231,11 @@ export function PricingComparisonChart({
                   />
                   <YAxis 
                     type="number" 
-                    dataKey="aashirvaaPrice" 
-                    name="Aashirvaad Price"
+                    dataKey="premiumBrandPrice" 
+                    name="Premium Brand Price"
                     tick={{ fontSize: 12 }}
                     tickFormatter={(value) => `₹${value}`}
-                    label={{ value: 'Aashirvaad Price (₹)', angle: -90, position: 'insideLeft' }}
+                    label={{ value: 'Premium Brand Price (₹)', angle: -90, position: 'insideLeft' }}
                   />
                   <Tooltip content={<CustomScatterTooltip />} />
                   <Scatter name="SKUs" fill="#8B5CF6">

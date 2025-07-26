@@ -7,7 +7,7 @@ import {
   platforms, 
   brands,
   cities, 
-  aashirvaaProducts, 
+  brandProducts, 
   darkStores,
   dateRanges 
 } from '@/data/mock-kpi-data'
@@ -81,7 +81,7 @@ export function FilterIndicator({ className }: FilterIndicatorProps) {
     // SKU filters
     if (selectedSkus.length > 0) {
       const skuNames = selectedSkus.map(id => 
-        aashirvaaProducts.find(p => p.id === id)?.name
+        brandProducts.find(p => p.id === id)?.name
       ).filter(Boolean)
       
       const displayText = skuNames.length > 2 

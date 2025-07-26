@@ -4,7 +4,7 @@ import {
   platforms, 
   brands,
   cities, 
-  aashirvaaProducts, 
+  brandProducts, 
   darkStores,
   filterOptions,
   dateRanges 
@@ -350,7 +350,7 @@ export const useFilteredData = () => {
     
     // Get filtered SKUs based on brand and category selection
     const getFilteredSkus = () => {
-      let filteredSkus = aashirvaaProducts
+      let filteredSkus = brandProducts
       
       if (selectedBrands.length > 0) {
         filteredSkus = filteredSkus.filter(product =>

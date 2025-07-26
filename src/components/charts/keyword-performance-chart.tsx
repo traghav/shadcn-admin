@@ -29,7 +29,7 @@ interface KeywordPerformanceChartProps {
 export function KeywordPerformanceChart({ 
   data = visualizationData.visibilityKeywords,
   title = "Keyword Performance Analysis",
-  description = "Search volume vs ranking performance for Aashirvaad keywords",
+  description = "Search volume vs ranking performance for brand keywords",
   height = 400
 }: KeywordPerformanceChartProps) {
   const [localPlatformFilter, setLocalPlatformFilter] = useState<string>('all')

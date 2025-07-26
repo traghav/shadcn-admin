@@ -35,7 +35,7 @@ const AIAnalysisComponent = memo(() => {
                   <p className="text-xl font-medium mb-2">AI Analysis Coming Soon</p>
                   <p className="text-sm max-w-md">
                     Advanced AI-powered analytics, trend predictions, and intelligent insights 
-                    for your Aashirvaad product performance will be available here.
+                    for your brand product performance will be available here.
                   </p>
                 </div>
               </div>

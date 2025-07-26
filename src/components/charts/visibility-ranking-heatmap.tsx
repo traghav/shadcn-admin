@@ -12,7 +12,7 @@ interface VisibilityRankingHeatmapProps {
 export function VisibilityRankingHeatmap({ 
   data = visualizationData.visibilityKeywords,
   title = "Search Ranking Heatmap",
-  description = "Aashirvaad keyword rankings across platforms"
+  description = "Brand keyword rankings across platforms"
 }: VisibilityRankingHeatmapProps) {
   const [selectedPlatform, setSelectedPlatform] = useState<string>('all')
   const [sortBy, setSortBy] = useState<'ranking' | 'volume' | 'sov'>('ranking')

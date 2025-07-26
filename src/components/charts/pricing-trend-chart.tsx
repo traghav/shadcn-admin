@@ -27,7 +27,7 @@ export function PricingTrendChart({
   description = "Comparative price index trends across competitors",
   height = 400
 }: PricingTrendChartProps) {
-  const [selectedBrands, setSelectedBrands] = useState<string[]>(['aashirvaad', 'fortune', 'tataSampann'])
+  const [selectedBrands, setSelectedBrands] = useState<string[]>(['premiumBrand', 'fortune', 'tataSampann'])
   const [timeRange, setTimeRange] = useState<string>('30')
 
   // Filter data based on time range
@@ -35,8 +35,8 @@ export function PricingTrendChart({
 
   // Brand configuration with colors
   const brandConfig = {
-    aashirvaad: { 
-      name: 'Aashirvaad', 
+    premiumBrand: { 
+      name: 'Premium Brand', 
       color: '#8B5CF6', 
       strokeWidth: 3 
     },
@@ -77,7 +77,7 @@ export function PricingTrendChart({
   // Calculate average and market position
   const latestData = filteredData[filteredData.length - 1]
   const marketAverage = latestData ? 
-    (latestData.aashirvaad + latestData.fortune + latestData.tataSampann + latestData.patanjali) / 4 : 100
+    (latestData.premiumBrand + latestData.fortune + latestData.tataSampann + latestData.patanjali) / 4 : 100
 
   return (
     <Card className="w-full">
@@ -134,9 +134,9 @@ export function PricingTrendChart({
           {/* Key metrics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             <div className="bg-purple-50 p-3 rounded-lg">
-              <div className="text-sm text-purple-600 font-medium">Aashirvaad Position</div>
+              <div className="text-sm text-purple-600 font-medium">Premium Brand Position</div>
               <div className="text-lg font-bold text-purple-800">
-                {latestData ? (latestData.aashirvaad > marketAverage ? 'Above' : 'Below') : '-'} Market
+                {latestData ? (latestData.premiumBrand > marketAverage ? 'Above' : 'Below') : '-'} Market
               </div>
             </div>
             <div className="bg-blue-50 p-3 rounded-lg">
@@ -148,14 +148,14 @@ export function PricingTrendChart({
             <div className="bg-green-50 p-3 rounded-lg">
               <div className="text-sm text-green-600 font-medium">Price Volatility</div>
               <div className="text-lg font-bold text-green-800">
-                {latestData ? Math.abs(latestData.aashirvaad - filteredData[0].aashirvaad).toFixed(1) : '0'}%
+                {latestData ? Math.abs(latestData.premiumBrand - filteredData[0].premiumBrand).toFixed(1) : '0'}%
               </div>
             </div>
             <div className="bg-orange-50 p-3 rounded-lg">
               <div className="text-sm text-orange-600 font-medium">vs. Lowest</div>
               <div className="text-lg font-bold text-orange-800">
                 {latestData ? 
-                  (latestData.aashirvaad - Math.min(latestData.fortune, latestData.tataSampann, latestData.patanjali)).toFixed(1) 
+                  (latestData.premiumBrand - Math.min(latestData.fortune, latestData.tataSampann, latestData.patanjali)).toFixed(1) 
                   : '0'}%
               </div>
             </div>
@@ -188,15 +188,15 @@ export function PricingTrendChart({
                 />
                 
                 {/* Lines for selected brands */}
-                {selectedBrands.includes('aashirvaad') && (
+                {selectedBrands.includes('premiumBrand') && (
                   <Line
                     type="monotone"
-                    dataKey="aashirvaad"
-                    name={brandConfig.aashirvaad.name}
-                    stroke={brandConfig.aashirvaad.color}
-                    strokeWidth={brandConfig.aashirvaad.strokeWidth}
-                    dot={{ fill: brandConfig.aashirvaad.color, r: 4 }}
-                    activeDot={{ r: 6, fill: brandConfig.aashirvaad.color }}
+                    dataKey="premiumBrand"
+                    name={brandConfig.premiumBrand.name}
+                    stroke={brandConfig.premiumBrand.color}
+                    strokeWidth={brandConfig.premiumBrand.strokeWidth}
+                    dot={{ fill: brandConfig.premiumBrand.color, r: 4 }}
+                    activeDot={{ r: 6, fill: brandConfig.premiumBrand.color }}
                   />
                 )}
                 {selectedBrands.includes('fortune') && (

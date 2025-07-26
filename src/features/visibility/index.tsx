@@ -13,7 +13,7 @@ export default function VisibilityAnalytics() {
   return (
     <DashboardLayout
       title="Visibility Analytics"
-      subtitle="Track Aashirvaad brand visibility and search performance across platforms"
+      subtitle="Track brand visibility and search performance across platforms"
       actions={
         <VisibilityCSVExport
           data={csvData}
@@ -35,7 +35,7 @@ export default function VisibilityAnalytics() {
               <CardHeader>
                 <CardTitle>Search Performance</CardTitle>
                 <CardDescription>
-                  Track how Aashirvaad products appear in search results
+                  Track how brand products appear in search results
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -64,14 +64,14 @@ export default function VisibilityAnalytics() {
             <CardHeader>
               <CardTitle>Top Performing Keywords</CardTitle>
               <CardDescription>
-                Aashirvaad products with highest search visibility
+                Brand products with highest search visibility
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-center justify-between py-2 border-b">
                   <div>
-                    <p className="font-medium">Aashirvaad Whole Wheat Atta</p>
+                    <p className="font-medium">Premium Whole Wheat Atta</p>
                     <p className="text-sm text-muted-foreground">Keyword: "atta"</p>
                   </div>
                   <div className="text-right">
@@ -81,7 +81,7 @@ export default function VisibilityAnalytics() {
                 </div>
                 <div className="flex items-center justify-between py-2 border-b">
                   <div>
-                    <p className="font-medium">Aashirvaad Multigrain Atta</p>
+                    <p className="font-medium">Premium Multigrain Atta</p>
                     <p className="text-sm text-muted-foreground">Keyword: "multigrain atta"</p>
                   </div>
                   <div className="text-right">
@@ -91,7 +91,7 @@ export default function VisibilityAnalytics() {
                 </div>
                 <div className="flex items-center justify-between py-2">
                   <div>
-                    <p className="font-medium">Aashirvaad Instant Poha</p>
+                    <p className="font-medium">Premium Instant Poha</p>
                     <p className="text-sm text-muted-foreground">Keyword: "instant poha"</p>
                   </div>
                   <div className="text-right">

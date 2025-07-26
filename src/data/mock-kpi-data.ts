@@ -1,5 +1,5 @@
 // Comprehensive mock data for Kelpie Dashboard KPIs
-// Aashirvaad (ITC) brand analytics across Blinkit, Swiggy Instamart, and Zepto
+// Brand analytics across Blinkit, Swiggy Instamart, and Zepto
 
 export interface Platform {
   id: string
@@ -13,7 +13,7 @@ export interface Brand {
   categories: string[]
 }
 
-export interface AashirvaaProduct {
+export interface BrandProduct {
   id: string
   name: string
   brandId: string
@@ -52,7 +52,7 @@ export const platforms: Platform[] = [
 ]
 
 export const brands: Brand[] = [
-  { id: 'aashirvaad', name: 'Aashirvaad', categories: ['Atta', 'Ready-to-Eat', 'Spices', 'Salt & Sugar'] },
+  { id: 'premium-brand', name: 'Premium Brand', categories: ['Atta', 'Ready-to-Eat', 'Spices', 'Salt & Sugar'] },
   { id: 'fortune', name: 'Fortune', categories: ['Atta', 'Spices'] },
   { id: 'tata-sampann', name: 'Tata Sampann', categories: ['Atta', 'Spices', 'Ready-to-Eat'] },
   { id: 'patanjali', name: 'Patanjali', categories: ['Atta', 'Spices', 'Salt & Sugar'] },
@@ -70,11 +70,11 @@ export const cities: City[] = [
   { id: 'chennai', name: 'Chennai', darkStores: 12, population: 4600000 }
 ]
 
-export const aashirvaaProducts: AashirvaaProduct[] = [
+export const brandProducts: BrandProduct[] = [
   {
     id: 'whole-wheat-atta-5kg',
     name: 'Whole Wheat Atta',
-    brandId: 'aashirvaad',
+    brandId: 'premium-brand',
     category: 'Atta',
     variants: ['5kg', '10kg'],
     basePrice: 315
@@ -82,7 +82,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'multigrain-atta-5kg',
     name: 'Multigrain Atta',
-    brandId: 'aashirvaad',
+    brandId: 'premium-brand',
     category: 'Atta',
     variants: ['5kg'],
     basePrice: 385
@@ -90,7 +90,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'instant-poha',
     name: 'Instant Poha',
-    brandId: 'aashirvaad',
+    brandId: 'premium-brand',
     category: 'Ready-to-Eat',
     variants: ['500g'],
     basePrice: 65
@@ -98,7 +98,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'instant-upma',
     name: 'Instant Upma',
-    brandId: 'aashirvaad',
+    brandId: 'premium-brand',
     category: 'Ready-to-Eat',
     variants: ['500g'],
     basePrice: 68
@@ -106,7 +106,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'instant-khichdi',
     name: 'Instant Khichdi',
-    brandId: 'aashirvaad',
+    brandId: 'premium-brand',
     category: 'Ready-to-Eat',
     variants: ['500g'],
     basePrice: 72
@@ -114,7 +114,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'turmeric-powder',
     name: 'Turmeric Powder',
-    brandId: 'aashirvaad',
+    brandId: 'premium-brand',
     category: 'Spices',
     variants: ['200g', '500g'],
     basePrice: 145
@@ -122,7 +122,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'chilli-powder',
     name: 'Chilli Powder',
-    brandId: 'aashirvaad',
+    brandId: 'premium-brand',
     category: 'Spices',
     variants: ['200g', '500g'],
     basePrice: 158
@@ -130,7 +130,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'coriander-powder',
     name: 'Coriander Powder',
-    brandId: 'aashirvaad',
+    brandId: 'premium-brand',
     category: 'Spices',
     variants: ['200g', '500g'],
     basePrice: 132
@@ -138,7 +138,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'iodized-salt',
     name: 'Iodized Salt',
-    brandId: 'aashirvaad',
+    brandId: 'premium-brand',
     category: 'Salt & Sugar',
     variants: ['1kg'],
     basePrice: 28
@@ -146,7 +146,7 @@ export const aashirvaaProducts: AashirvaaProduct[] = [
   {
     id: 'crystal-salt',
     name: 'Crystal Salt',
-    brandId: 'aashirvaad',
+    brandId: 'premium-brand',
     category: 'Salt & Sugar',
     variants: ['1kg'],
     basePrice: 32
@@ -247,7 +247,7 @@ export function generateAvailabilityData() {
       availability: 90 + Math.random() * 8,
       stores: Math.floor(city.darkStores * (2 + Math.random() * 6))
     })),
-    bySku: aashirvaaProducts.map(product => ({
+    bySku: brandProducts.map(product => ({
       skuId: product.id,
       skuName: product.name,
       availability: 85 + Math.random() * 15,
@@ -266,7 +266,7 @@ export function generatePricingData() {
       'zepto': 100.9
     },
     competitiveness: 89.4,
-    bySku: aashirvaaProducts.map(product => ({
+    bySku: brandProducts.map(product => ({
       skuId: product.id,
       skuName: product.name,
       currentPrice: product.basePrice * (0.95 + Math.random() * 0.1),
@@ -307,7 +307,7 @@ export function generateDashboardData() {
     pricing: generatePricingData(),
     visibility: generateVisibilityData(),
     summary: {
-      totalSkus: aashirvaaProducts.length,
+      totalSkus: brandProducts.length,
       totalPlatforms: platforms.length,
       totalCities: cities.length,
       totalStores: cities.reduce((sum, city) => sum + city.darkStores * 8, 0)
@@ -329,7 +329,7 @@ export interface HeatmapData {
 
 export interface TrendData {
   date: string
-  aashirvaad: number
+  premiumBrand: number
   fortune: number
   tataSampann: number
   patanjali: number
@@ -357,7 +357,7 @@ export interface VisibilityKeywordData {
 export function generateAvailabilityHeatmap(): HeatmapData[] {
   const heatmapData: HeatmapData[] = []
   
-  aashirvaaProducts.forEach(product => {
+  brandProducts.forEach(product => {
     cities.forEach(city => {
       platforms.forEach(platform => {
         heatmapData.push({
@@ -384,7 +384,7 @@ export function generatePricingTrends(days: number = 30): TrendData[] {
     
     trends.push({
       date: date.toISOString().split('T')[0],
-      aashirvaad: 100 + (Math.random() - 0.5) * 10, // Price index 95-105
+      premiumBrand: 100 + (Math.random() - 0.5) * 10, // Price index 95-105
       fortune: 98 + (Math.random() - 0.5) * 8,
       tataSampann: 102 + (Math.random() - 0.5) * 12,
       patanjali: 95 + (Math.random() - 0.5) * 6
@@ -398,7 +398,7 @@ export function generatePricingTrends(days: number = 30): TrendData[] {
 export function generatePricingComparison(): PricingComparisonData[] {
   const pricingData: PricingComparisonData[] = []
   
-  aashirvaaProducts.forEach(product => {
+  brandProducts.forEach(product => {
     platforms.forEach(platform => {
       const aashirvaaPrice = product.basePrice * (0.95 + Math.random() * 0.1)
       const competitorAvg = product.basePrice * (0.98 + Math.random() * 0.08)
@@ -430,14 +430,14 @@ export function generateVisibilityKeywords(): VisibilityKeywordData[] {
   
   keywords.forEach(keyword => {
     // Find relevant SKUs for this keyword
-    const relevantSkus = aashirvaaProducts.filter(product => 
+    const relevantSkus = brandProducts.filter(product => 
       product.name.toLowerCase().includes(keyword.toLowerCase()) ||
       keyword.includes(product.category.toLowerCase())
     )
     
     if (relevantSkus.length === 0) {
       // Add a general match for broader keywords
-      relevantSkus.push(aashirvaaProducts[Math.floor(Math.random() * aashirvaaProducts.length)])
+      relevantSkus.push(brandProducts[Math.floor(Math.random() * brandProducts.length)])
     }
     
     relevantSkus.forEach(sku => {
@@ -461,7 +461,7 @@ export function generateVisibilityKeywords(): VisibilityKeywordData[] {
 export function generateShareOfVoiceData() {
   return {
     overall: [
-      { name: 'Aashirvaad', value: 23.8, fill: '#8B5CF6' },
+      { name: 'Premium Brand', value: 23.8, fill: '#8B5CF6' },
       { name: 'Fortune', value: 19.2, fill: '#06B6D4' },
       { name: 'Tata Sampann', value: 16.5, fill: '#10B981' },
       { name: 'Patanjali', value: 14.3, fill: '#F59E0B' },
@@ -469,21 +469,21 @@ export function generateShareOfVoiceData() {
     ],
     byPlatform: {
       'Blinkit': [
-        { name: 'Aashirvaad', value: 26.2, fill: '#8B5CF6' },
+        { name: 'Premium Brand', value: 26.2, fill: '#8B5CF6' },
         { name: 'Fortune', value: 21.1, fill: '#06B6D4' },
         { name: 'Tata Sampann', value: 18.3, fill: '#10B981' },
         { name: 'Patanjali', value: 12.8, fill: '#F59E0B' },
         { name: 'Others', value: 21.6, fill: '#6B7280' }
       ],
       'Swiggy Instamart': [
-        { name: 'Aashirvaad', value: 22.8, fill: '#8B5CF6' },
+        { name: 'Premium Brand', value: 22.8, fill: '#8B5CF6' },
         { name: 'Fortune', value: 18.9, fill: '#06B6D4' },
         { name: 'Tata Sampann', value: 15.7, fill: '#10B981' },
         { name: 'Patanjali', value: 16.2, fill: '#F59E0B' },
         { name: 'Others', value: 26.4, fill: '#6B7280' }
       ],
       'Zepto': [
-        { name: 'Aashirvaad', value: 22.4, fill: '#8B5CF6' },
+        { name: 'Premium Brand', value: 22.4, fill: '#8B5CF6' },
         { name: 'Fortune', value: 17.8, fill: '#06B6D4' },
         { name: 'Tata Sampann', value: 15.1, fill: '#10B981' },
         { name: 'Patanjali', value: 13.9, fill: '#F59E0B' },
@@ -496,11 +496,11 @@ export function generateShareOfVoiceData() {
 // Price distribution data for histograms
 export function generatePriceDistribution() {
   const priceRanges = [
-    { range: '₹20-₹50', aashirvaad: 2, competitors: 8 },
-    { range: '₹50-₹100', aashirvaad: 5, competitors: 12 },
-    { range: '₹100-₹200', aashirvaad: 3, competitors: 7 },
-    { range: '₹200-₹350', aashirvaad: 8, competitors: 15 },
-    { range: '₹350-₹500', aashirvaad: 2, competitors: 3 }
+    { range: '₹20-₹50', premiumBrand: 2, competitors: 8 },
+    { range: '₹50-₹100', premiumBrand: 5, competitors: 12 },
+    { range: '₹100-₹200', premiumBrand: 3, competitors: 7 },
+    { range: '₹200-₹350', premiumBrand: 8, competitors: 15 },
+    { range: '₹350-₹500', premiumBrand: 2, competitors: 3 }
   ]
   
   return priceRanges
@@ -522,7 +522,7 @@ export function generateStorePerformanceData() {
           availability: 85 + Math.random() * 15,
           avgOrderValue: 250 + Math.random() * 200,
           monthlyOrders: Math.floor(500 + Math.random() * 2000),
-          topSkus: aashirvaaProducts
+          topSkus: brandProducts
             .sort(() => Math.random() - 0.5)
             .slice(0, 3)
             .map(p => p.name),
@@ -553,7 +553,7 @@ export const filterOptions = {
     { value: 'Spices', label: 'Spices' },
     { value: 'Salt & Sugar', label: 'Salt & Sugar' }
   ],
-  skus: aashirvaaProducts.map(p => ({ 
+  skus: brandProducts.map(p => ({ 
     value: p.id, 
     label: p.name,
     category: p.category 

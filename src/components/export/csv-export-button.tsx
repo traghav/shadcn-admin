@@ -93,7 +93,7 @@ export function AvailabilityCSVExport({
   return (
     <CSVExportButton
       title="Availability Analytics Report"
-      subtitle="Aashirvaad product availability across quick commerce platforms"
+      subtitle="Brand product availability across quick commerce platforms"
       tab="availability"
       data={data}
       {...props}
@@ -110,7 +110,7 @@ export function PricingCSVExport({
   return (
     <CSVExportButton
       title="Pricing Analytics Report"
-      subtitle="Aashirvaad pricing trends and competitive analysis"
+      subtitle="Brand pricing trends and competitive analysis"
       tab="pricing"
       data={data}
       {...props}
@@ -127,7 +127,7 @@ export function VisibilityCSVExport({
   return (
     <CSVExportButton
       title="Visibility Analytics Report"
-      subtitle="Aashirvaad search visibility and ranking performance"
+      subtitle="Brand search visibility and ranking performance"
       tab="visibility"
       data={data}
       {...props}

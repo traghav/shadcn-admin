@@ -49,32 +49,32 @@ export function MarketShareChart({
     fill: item.fill
   }))
 
-  // Radar chart data (comparison across platforms for Aashirvaad)
+  // Radar chart data (comparison across platforms for Premium Brand)
   const radarData = [
     {
       platform: 'Overall',
-      aashirvaad: shareOfVoiceData.overall.find(item => item.name === 'Aashirvaad')?.value || 0,
+      premiumBrand: shareOfVoiceData.overall.find(item => item.name === 'Premium Brand')?.value || 0,
       fortune: shareOfVoiceData.overall.find(item => item.name === 'Fortune')?.value || 0,
       tataSampann: shareOfVoiceData.overall.find(item => item.name === 'Tata Sampann')?.value || 0,
       patanjali: shareOfVoiceData.overall.find(item => item.name === 'Patanjali')?.value || 0
     },
     {
       platform: 'Blinkit',
-      aashirvaad: shareOfVoiceData.byPlatform.Blinkit.find(item => item.name === 'Aashirvaad')?.value || 0,
+      premiumBrand: shareOfVoiceData.byPlatform.Blinkit.find(item => item.name === 'Premium Brand')?.value || 0,
       fortune: shareOfVoiceData.byPlatform.Blinkit.find(item => item.name === 'Fortune')?.value || 0,
       tataSampann: shareOfVoiceData.byPlatform.Blinkit.find(item => item.name === 'Tata Sampann')?.value || 0,
       patanjali: shareOfVoiceData.byPlatform.Blinkit.find(item => item.name === 'Patanjali')?.value || 0
     },
     {
       platform: 'Swiggy',
-      aashirvaad: shareOfVoiceData.byPlatform['Swiggy Instamart'].find(item => item.name === 'Aashirvaad')?.value || 0,
+      premiumBrand: shareOfVoiceData.byPlatform['Swiggy Instamart'].find(item => item.name === 'Premium Brand')?.value || 0,
       fortune: shareOfVoiceData.byPlatform['Swiggy Instamart'].find(item => item.name === 'Fortune')?.value || 0,
       tataSampann: shareOfVoiceData.byPlatform['Swiggy Instamart'].find(item => item.name === 'Tata Sampann')?.value || 0,
       patanjali: shareOfVoiceData.byPlatform['Swiggy Instamart'].find(item => item.name === 'Patanjali')?.value || 0
     },
     {
       platform: 'Zepto',
-      aashirvaad: shareOfVoiceData.byPlatform.Zepto.find(item => item.name === 'Aashirvaad')?.value || 0,
+      premiumBrand: shareOfVoiceData.byPlatform.Zepto.find(item => item.name === 'Premium Brand')?.value || 0,
       fortune: shareOfVoiceData.byPlatform.Zepto.find(item => item.name === 'Fortune')?.value || 0,
       tataSampann: shareOfVoiceData.byPlatform.Zepto.find(item => item.name === 'Tata Sampann')?.value || 0,
       patanjali: shareOfVoiceData.byPlatform.Zepto.find(item => item.name === 'Patanjali')?.value || 0
@@ -123,15 +123,15 @@ export function MarketShareChart({
   }
 
   // Calculate insights
-  const aashirvaaShare = currentData.find(item => item.name === 'Aashirvaad')?.value || 0
+  const premiumBrandShare = currentData.find(item => item.name === 'Premium Brand')?.value || 0
   const leadingCompetitor = currentData
-    .filter(item => item.name !== 'Aashirvaad' && item.name !== 'Others')
+    .filter(item => item.name !== 'Premium Brand' && item.name !== 'Others')
     .sort((a, b) => b.value - a.value)[0]
   
   const marketPosition = currentData
     .filter(item => item.name !== 'Others')
     .sort((a, b) => b.value - a.value)
-    .findIndex(item => item.name === 'Aashirvaad') + 1
+    .findIndex(item => item.name === 'Premium Brand') + 1
 
   return (
     <Card className="w-full">
@@ -173,9 +173,9 @@ export function MarketShareChart({
           {/* Market insights */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             <div className="bg-purple-50 p-3 rounded-lg">
-              <div className="text-sm text-purple-600 font-medium">Aashirvaad Share</div>
+              <div className="text-sm text-purple-600 font-medium">Premium Brand Share</div>
               <div className="text-lg font-bold text-purple-800">
-                {aashirvaaShare.toFixed(1)}%
+                {premiumBrandShare.toFixed(1)}%
               </div>
               <div className="text-xs text-purple-600">
                 {selectedPlatform === 'overall' ? 'Overall Market' : selectedPlatform}
@@ -200,11 +200,11 @@ export function MarketShareChart({
             <div className="bg-green-50 p-3 rounded-lg">
               <div className="text-sm text-green-600 font-medium">Gap to Leader</div>
               <div className="text-lg font-bold text-green-800">
-                {leadingCompetitor ? (leadingCompetitor.value - aashirvaaShare > 0 ? '+' : '') : ''}
-                {leadingCompetitor ? (leadingCompetitor.value - aashirvaaShare).toFixed(1) : '0'}%
+                {leadingCompetitor ? (leadingCompetitor.value - premiumBrandShare > 0 ? '+' : '') : ''}
+                {leadingCompetitor ? (leadingCompetitor.value - premiumBrandShare).toFixed(1) : '0'}%
               </div>
               <div className="text-xs text-green-600">
-                {leadingCompetitor && leadingCompetitor.value < aashirvaaShare ? 'Leading market' : 'Behind leader'}
+                {leadingCompetitor && leadingCompetitor.value < premiumBrandShare ? 'Leading market' : 'Behind leader'}
               </div>
             </div>
           </div>
@@ -263,7 +263,7 @@ export function MarketShareChart({
                     tick={{ fontSize: 10 }}
                     tickFormatter={(value) => `${value}%`}
                   />
-                  <Radar name="Aashirvaad" dataKey="aashirvaad" stroke="#8B5CF6" fill="#8B5CF6" fillOpacity={0.3} strokeWidth={3} />
+                  <Radar name="Premium Brand" dataKey="premiumBrand" stroke="#8B5CF6" fill="#8B5CF6" fillOpacity={0.3} strokeWidth={3} />
                   <Radar name="Fortune" dataKey="fortune" stroke="#06B6D4" fill="#06B6D4" fillOpacity={0.1} strokeWidth={2} />
                   <Radar name="Tata Sampann" dataKey="tataSampann" stroke="#10B981" fill="#10B981" fillOpacity={0.1} strokeWidth={2} />
                   <Radar name="Patanjali" dataKey="patanjali" stroke="#F59E0B" fill="#F59E0B" fillOpacity={0.1} strokeWidth={2} />
@@ -283,7 +283,7 @@ export function MarketShareChart({
                   <thead>
                     <tr className="border-b bg-gray-50">
                       <th className="text-left p-2 font-medium">Platform</th>
-                      <th className="text-center p-2 font-medium">Aashirvaad</th>
+                      <th className="text-center p-2 font-medium">Premium Brand</th>
                       <th className="text-center p-2 font-medium">Fortune</th>
                       <th className="text-center p-2 font-medium">Tata Sampann</th>
                       <th className="text-center p-2 font-medium">Patanjali</th>
@@ -292,7 +292,7 @@ export function MarketShareChart({
                   </thead>
                   <tbody>
                     {Object.entries(shareOfVoiceData.byPlatform).map(([platform, data]) => {
-                      const aashirvaaValue = data.find(item => item.name === 'Aashirvaad')?.value || 0
+                      const premiumBrandValue = data.find(item => item.name === 'Premium Brand')?.value || 0
                       const fortuneValue = data.find(item => item.name === 'Fortune')?.value || 0
                       const tataValue = data.find(item => item.name === 'Tata Sampann')?.value || 0
                       const patanjaliValue = data.find(item => item.name === 'Patanjali')?.value || 0
@@ -300,12 +300,12 @@ export function MarketShareChart({
                       const position = data
                         .filter(item => item.name !== 'Others')
                         .sort((a, b) => b.value - a.value)
-                        .findIndex(item => item.name === 'Aashirvaad') + 1
+                        .findIndex(item => item.name === 'Premium Brand') + 1
 
                       return (
                         <tr key={platform} className="border-b hover:bg-gray-50">
                           <td className="p-2 font-medium">{platform}</td>
-                          <td className="p-2 text-center font-bold text-purple-600">{aashirvaaValue.toFixed(1)}%</td>
+                          <td className="p-2 text-center font-bold text-purple-600">{premiumBrandValue.toFixed(1)}%</td>
                           <td className="p-2 text-center">{fortuneValue.toFixed(1)}%</td>
                           <td className="p-2 text-center">{tataValue.toFixed(1)}%</td>
                           <td className="p-2 text-center">{patanjaliValue.toFixed(1)}%</td>

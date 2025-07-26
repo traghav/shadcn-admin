@@ -2,7 +2,7 @@
 
 ## Overview
 
-This directory contains comprehensive data visualization components built with React and Recharts for the Kelpie Dashboard - a quick commerce analytics platform focused on Aashirvaad (ITC brand) performance across Blinkit, Swiggy Instamart, and Zepto.
+This directory contains comprehensive data visualization components built with React and Recharts for the Kelpie Dashboard - a quick commerce analytics platform focused on brand performance across Blinkit, Swiggy Instamart, and Zepto.
 
 ## Chart Components
 
@@ -22,7 +22,7 @@ This directory contains comprehensive data visualization components built with R
 ### Pricing Analytics
 
 #### 2. **PricingTrendChart** (`pricing-trend-chart.tsx`)
-- **Purpose**: Time-series price index trends comparing Aashirvaad vs competitors
+- **Purpose**: Time-series price index trends comparing brand vs competitors
 - **Features**:
   - Multi-brand comparison with toggleable lines
   - Time range filtering (7, 14, 30 days)
@@ -202,7 +202,7 @@ function PricingDashboard() {
 - **Critical (<80%)**: Red-400
 
 ### Brand Colors
-- **Aashirvaad**: Purple (#8B5CF6)
+- **Premium Brand**: Purple (#8B5CF6)
 - **Fortune**: Cyan (#06B6D4)
 - **Tata Sampann**: Green (#10B981)
 - **Patanjali**: Orange (#F59E0B)

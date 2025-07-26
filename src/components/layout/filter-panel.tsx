@@ -40,7 +40,7 @@ import { useFilterStore, DateRange } from '@/stores/filterStore'
 import { 
   platforms, 
   cities, 
-  aashirvaaProducts, 
+  brandProducts, 
   filterOptions,
   dateRanges 
 } from '@/data/mock-kpi-data'
@@ -98,7 +98,7 @@ export function FilterPanel({ className }: FilterPanelProps) {
 
   // Filter SKUs based on category selection and search
   const getFilteredSkus = () => {
-    let filteredSkus = aashirvaaProducts
+    let filteredSkus = brandProducts
     
     if (selectedCategories.length > 0) {
       filteredSkus = filteredSkus.filter(product =>
@@ -120,7 +120,7 @@ export function FilterPanel({ className }: FilterPanelProps) {
     'atta', 'wheat flour', 'whole wheat atta', 'multigrain atta',
     'instant poha', 'instant upma', 'instant khichdi',
     'turmeric powder', 'chilli powder', 'coriander powder',
-    'iodized salt', 'crystal salt', 'aashirvaad'
+    'iodized salt', 'crystal salt', 'premium brand'
   ]
 
   const getFilteredKeywords = () => {

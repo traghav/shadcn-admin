@@ -62,21 +62,21 @@ const AvailabilityAnalyticsComponent = memo(() => {
 
   const lowStockAlerts = [
     {
-      product: "Aashirvaad Whole Wheat Atta 5kg",
+      product: "Premium Whole Wheat Atta 5kg",
       category: "Atta",
       stores: 3,
       severity: "Critical",
       color: "text-destructive"
     },
     {
-      product: "Aashirvaad Instant Poha",
+      product: "Premium Instant Poha",
       category: "Ready-to-Eat",
       stores: 8,
       severity: "Low",
       color: "text-chart-3"
     },
     {
-      product: "Aashirvaad Turmeric Powder",
+      product: "Premium Turmeric Powder",
       category: "Spices",
       stores: 15,
       severity: "Watch",
@@ -87,7 +87,7 @@ const AvailabilityAnalyticsComponent = memo(() => {
   return (
     <DashboardLayout
       title="Availability Analytics"
-      subtitle="Monitor Aashirvaad product availability across quick commerce platforms"
+      subtitle="Monitor brand product availability across quick commerce platforms"
       actions={
         <SmoothTransition>
           <AvailabilityCSVExport

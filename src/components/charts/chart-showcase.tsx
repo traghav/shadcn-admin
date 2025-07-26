@@ -66,7 +66,7 @@ export function ChartShowcase({ className = '' }: ChartShowcaseProps) {
               <ChartGrid columns={2}>
                 <ResponsiveChartContainer
                   title="Price Index Trends"
-                  description="Time-series comparison of Aashirvaad vs competitors"
+                  description="Time-series comparison of brand vs competitors"
                   allowFullscreen
                 >
                   <PricingTrendChart height={450} />

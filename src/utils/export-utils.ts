@@ -37,10 +37,10 @@ export const exportToPDF = async (options: ExportOptions, data?: ExportData) => 
     const pageWidth = pdf.internal.pageSize.getWidth()
     const pageHeight = pdf.internal.pageSize.getHeight()
     
-    // Add Aashirvaad branding header
+    // Add brand header
     pdf.setFontSize(20)
     pdf.setTextColor(220, 53, 69) // Brand red color
-    pdf.text('Aashirvaad Analytics Report', 20, 25)
+    pdf.text('Brand Analytics Report', 20, 25)
     
     // Add report details
     pdf.setFontSize(14)
@@ -137,7 +137,7 @@ export const exportToPDF = async (options: ExportOptions, data?: ExportData) => 
     }
     
     // Save the PDF
-    const filename = `aashirvaad-${options.tab}-report_${getTimestamp()}.pdf`
+    const filename = `brand-${options.tab}-report_${getTimestamp()}.pdf`
     pdf.save(filename)
     
     return { success: true, filename }
@@ -155,7 +155,7 @@ export const exportToExcel = (options: ExportOptions, data: ExportData) => {
     // Create main data sheet
     const worksheet = XLSX.utils.aoa_to_sheet([
       // Add header with report info
-      ['Aashirvaad Analytics Report'],
+      ['Brand Analytics Report'],
       [options.title],
       options.subtitle ? [options.subtitle] : [],
       [''],
@@ -185,7 +185,7 @@ export const exportToExcel = (options: ExportOptions, data: ExportData) => {
     }
     
     // Export as Excel file
-    const filename = `aashirvaad-${options.tab}-data_${getTimestamp()}.xlsx`
+    const filename = `brand-${options.tab}-data_${getTimestamp()}.xlsx`
     XLSX.writeFile(workbook, filename)
     
     return { success: true, filename }
@@ -199,7 +199,7 @@ export const exportToCSV = (options: ExportOptions, data: ExportData) => {
   try {
     const csvContent = [
       // Header info
-      'Aashirvaad Analytics Report',
+      'Brand Analytics Report',
       options.title,
       options.subtitle || '',
       '',
@@ -217,7 +217,7 @@ export const exportToCSV = (options: ExportOptions, data: ExportData) => {
     const link = document.createElement('a')
     const url = URL.createObjectURL(blob)
     
-    const filename = `aashirvaad-${options.tab}-data_${getTimestamp()}.csv`
+    const filename = `brand-${options.tab}-data_${getTimestamp()}.csv`
     link.setAttribute('href', url)
     link.setAttribute('download', filename)
     link.style.visibility = 'hidden'
@@ -243,7 +243,7 @@ export const exportToPowerPoint = async (options: ExportOptions, kpiData?: any) 
       <!DOCTYPE html>
       <html>
       <head>
-        <title>Aashirvaad ${options.title} Summary</title>
+        <title>Brand ${options.title} Summary</title>
         <style>
           body { 
             font-family: Arial, sans-serif; 
@@ -347,7 +347,7 @@ export const exportToPowerPoint = async (options: ExportOptions, kpiData?: any) 
       </head>
       <body>
         <div class="header">
-          <div class="brand-title">Aashirvaad Analytics Summary</div>
+          <div class="brand-title">Brand Analytics Summary</div>
           <div class="subtitle">${options.title}</div>
           ${options.subtitle ? `<div class="subtitle">${options.subtitle}</div>` : ''}
         </div>
@@ -390,7 +390,7 @@ export const exportToPowerPoint = async (options: ExportOptions, kpiData?: any) 
     const link = document.createElement('a')
     const url = URL.createObjectURL(blob)
     
-    const filename = `aashirvaad-${options.tab}-summary_${getTimestamp()}.html`
+    const filename = `brand-${options.tab}-summary_${getTimestamp()}.html`
     link.setAttribute('href', url)
     link.setAttribute('download', filename)
     link.style.visibility = 'hidden'

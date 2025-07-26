@@ -14,7 +14,7 @@ export default function PricingAnalytics() {
   return (
     <DashboardLayout
       title="Pricing Analytics"
-      subtitle="Monitor Aashirvaad pricing strategy and competitive positioning"
+      subtitle="Monitor brand pricing strategy and competitive positioning"
       actions={
         <PricingCSVExport
           data={csvData}

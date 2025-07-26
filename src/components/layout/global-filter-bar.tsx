@@ -23,7 +23,7 @@ import {
   platforms, 
   brands,
   cities, 
-  aashirvaaProducts, 
+  brandProducts, 
   darkStores,
   dateRanges 
 } from '@/data/mock-kpi-data'
@@ -59,7 +59,7 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
 
   // Get filtered data based on current selections
   const getFilteredSkus = () => {
-    let filteredSkus = aashirvaaProducts
+    let filteredSkus = brandProducts
     
     if (selectedBrands.length > 0) {
       filteredSkus = filteredSkus.filter(product =>
@@ -90,7 +90,7 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
     'atta', 'wheat flour', 'whole wheat atta', 'multigrain atta',
     'instant poha', 'instant upma', 'instant khichdi',
     'turmeric powder', 'chilli powder', 'coriander powder',
-    'iodized salt', 'crystal salt', 'aashirvaad'
+    'iodized salt', 'crystal salt', 'premium brand'
   ]
 
   const getDisplayText = (items: string[], getNameById: (id: string) => string, maxItems = 2) => {

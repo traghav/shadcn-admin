@@ -160,7 +160,7 @@ export function KpiShowcase() {
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Availability Analytics</h3>
                 <p className="text-sm text-muted-foreground">
-                  Aashirvaad products across Blinkit, Swiggy Instamart, and Zepto
+                  brand products across Blinkit, Swiggy Instamart, and Zepto
                 </p>
               </div>
               <AvailabilityKpiGrid />

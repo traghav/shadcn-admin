@@ -189,7 +189,7 @@ export function AvailabilityExport({
   return (
     <ExportDropdown
       title="Availability Analytics Report"
-      subtitle="Aashirvaad product availability across quick commerce platforms"
+      subtitle="Brand product availability across quick commerce platforms"
       tab="availability"
       data={data}
       kpiData={kpiData}
@@ -209,7 +209,7 @@ export function PricingExport({
   return (
     <ExportDropdown
       title="Pricing Analytics Report"
-      subtitle="Aashirvaad pricing trends and competitive analysis"
+      subtitle="Brand pricing trends and competitive analysis"
       tab="pricing"
       data={data}
       kpiData={kpiData}
@@ -229,7 +229,7 @@ export function VisibilityExport({
   return (
     <ExportDropdown
       title="Visibility Analytics Report"
-      subtitle="Aashirvaad search visibility and ranking performance"
+      subtitle="Brand search visibility and ranking performance"
       tab="visibility"
       data={data}
       kpiData={kpiData}

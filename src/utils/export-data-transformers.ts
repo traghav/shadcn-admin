@@ -163,7 +163,7 @@ export const transformChartData = (chartType: string, rawData?: any) => {
       return {
         labels: ['Atta', 'Ready-to-Eat', 'Spices', 'Salt & Sugar'],
         datasets: [
-          { label: 'Aashirvaad', data: [245, 89, 65, 32] },
+          { label: 'Premium Brand', data: [245, 89, 65, 32] },
           { label: 'Competitors', data: [250, 88, 58, 35] }
         ]
       }

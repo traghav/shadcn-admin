@@ -48,7 +48,7 @@ export const availabilityKpiData: Record<string, KpiData> = {
     },
     status: 'good',
     icon: <StoreCoverageIcon />,
-    description: 'Stores carrying Aashirvaad products',
+    description: 'Stores carrying brand products',
     target: 900
   },
   availabilityConsistency: {
@@ -219,7 +219,7 @@ export const platformAvailabilityData = {
   }
 }
 
-// SKU-specific availability data for Aashirvaad products
+// SKU-specific availability data for brand products
 export const skuAvailabilityData = [
   {
     sku: 'Whole Wheat Atta 5kg',

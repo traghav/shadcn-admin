@@ -1,4 +1,4 @@
-// Shared types for Kelpie Dashboard - Aashirvaad Analytics
+// Shared types for Kelpie Dashboard - Brand Analytics
 
 export type Platform = 'Blinkit' | 'Swiggy Instamart' | 'Zepto';
 
@@ -20,7 +20,7 @@ export interface Product {
   name: string;
   sku: string;
   category: ProductCategory;
-  brand: 'Aashirvaad';
+  brand: 'Premium Brand';
   description?: string;
   imageUrl?: string;
   weight?: string;
